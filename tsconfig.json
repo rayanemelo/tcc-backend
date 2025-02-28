@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "typeRoots": ["src/app/types", "./node_modules/@types", "src/config" ],
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "src/tests/**/*",
+    "**/*.mock.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+  ]
+}
