@@ -6,7 +6,7 @@ export class FloodAreaRepositoryPrisma implements IFloodAreaRepository {
     // return await prisma.faq.findMany();
     throw new Error('Method not implemented.');
   }
-  getById(id: string): Promise<FloodAreaEntity> {
+  getById(id: number): Promise<FloodAreaEntity> {
     throw new Error('Method not implemented.');
   }
   createFloodArea(floodArea: FloodAreaEntity): Promise<FloodAreaEntity> {
