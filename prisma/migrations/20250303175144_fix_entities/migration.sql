@@ -72,8 +72,8 @@ CREATE TABLE "tb_code" (
 CREATE TABLE "tb_flood_area" (
     "id" SERIAL NOT NULL,
     "address" TEXT NOT NULL,
-    "latitude" DOUBLE PRECISION NOT NULL,
-    "longitude" DOUBLE PRECISION NOT NULL,
+    "latitude" TEXT NOT NULL,
+    "longitude" TEXT NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT false,
     "status" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,

@@ -1,24 +1,43 @@
 import { FloodAreaEntity } from '../../../domain/entities/flood-area/flood-area-entity';
 import { IFloodAreaRepository } from '../../../domain/repositories/flood-area/flood-area-repository';
+import { prisma } from '../../database';
 
 export class FloodAreaRepositoryPrisma implements IFloodAreaRepository {
   async listFloodAreas(): Promise<FloodAreaEntity[]> {
-    // return await prisma.faq.findMany();
-    throw new Error('Method not implemented.');
+    return await prisma.floodArea.findMany();
   }
-  getById(id: number): Promise<FloodAreaEntity> {
-    throw new Error('Method not implemented.');
+
+  async getFloodAreaById(id: number): Promise<FloodAreaEntity | null> {
+    return await prisma.floodArea.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
   }
-  createFloodArea(floodArea: FloodAreaEntity): Promise<FloodAreaEntity> {
-    throw new Error('Method not implemented.');
+
+  async createFloodArea(floodArea: FloodAreaEntity): Promise<FloodAreaEntity> {
+    return await prisma.floodArea.create({
+      data: floodArea,
+    });
   }
-  updateFloodArea(
-    id: string,
+
+  async updateFloodArea(
+    id: number,
     floodArea: Partial<FloodAreaEntity>
   ): Promise<FloodAreaEntity> {
-    throw new Error('Method not implemented.');
+    return await prisma.floodArea.update({
+      where: {
+        id: Number(id),
+      },
+      data: floodArea,
+    });
   }
-  deleteFloodArea(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async deleteFloodArea(id: number): Promise<void> {
+    await prisma.floodArea.delete({
+      where: {
+        id: Number(id),
+      },
+    });
   }
 }

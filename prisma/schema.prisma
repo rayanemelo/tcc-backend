@@ -89,8 +89,8 @@ model Code {
 model FloodArea {
   id            Int      @id @default(autoincrement())
   address       String
-  latitude      Float
-  longitude     Float
+  latitude      String
+  longitude     String
   active        Boolean  @default(false)
   status        String // pending, approved, rejected
   userId        Int      @map("user_id")

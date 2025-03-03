@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ListFloodAreaUseCase } from '../../../app/use-cases/flood-area/list-flood-area-use-case';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 
 class ListFloodAreaController {
   private listFloodAreaUseCase: ListFloodAreaUseCase;
@@ -15,8 +16,7 @@ class ListFloodAreaController {
       const floodAreas = await this.listFloodAreaUseCase.execute();
       res.status(200).json(floodAreas);
     } catch (error) {
-      console.error('error: ', error);
-      res.status(500).json({ message: error });
+      GlobalExceptionHandler.handle(error, res);
     }
   };
 }

@@ -4,7 +4,7 @@ import { GetFaqByIdUseCase } from '../../../app/use-cases/faq/get-faq-by-id-use-
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { paramIdSchema } from '../../types/param-id-schema';
 
-class GetByIdFaqController {
+class GetFaqByIdController {
   private getFaqByIdUseCase: GetFaqByIdUseCase;
 
   constructor() {
@@ -29,4 +29,4 @@ class GetByIdFaqController {
   };
 }
 
-export const getByIdFaqController = new GetByIdFaqController();
+export const getFaqByIdController = new GetFaqByIdController();

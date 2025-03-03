@@ -2,11 +2,11 @@ import { FloodAreaEntity } from '../../entities/flood-area/flood-area-entity';
 
 export interface IFloodAreaRepository {
   listFloodAreas(): Promise<FloodAreaEntity[]>;
-  getById(id: number): Promise<FloodAreaEntity>;
+  getFloodAreaById(id: number): Promise<FloodAreaEntity | null>;
   createFloodArea(floodArea: FloodAreaEntity): Promise<FloodAreaEntity>;
   updateFloodArea(
-    id: string,
+    id: number,
     floodArea: Partial<FloodAreaEntity>
   ): Promise<FloodAreaEntity>;
-  deleteFloodArea(id: string): Promise<void>;
+  deleteFloodArea(id: number): Promise<void>;
 }
