@@ -50,7 +50,7 @@ CREATE TABLE "tb_user" (
     "active" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "code_id" INTEGER,
+    "code_id" INTEGER NOT NULL,
 
     CONSTRAINT "tb_user_pkey" PRIMARY KEY ("id")
 );

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
 import { GetFaqByIdUseCase } from '../../../app/use-cases/faq/get-faq-by-id-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 
 class GetFaqByIdController {
   private getFaqByIdUseCase: GetFaqByIdUseCase;

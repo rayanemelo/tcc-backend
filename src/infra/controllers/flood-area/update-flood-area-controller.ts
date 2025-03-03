@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UpdateFlooadAreaUseCase } from '../../../app/use-cases/flood-area/update-flood-area-use-case';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 
 class UpdateFloodAreaController {

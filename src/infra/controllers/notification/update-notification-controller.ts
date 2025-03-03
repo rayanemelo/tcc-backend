@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UpdateNotificationUseCase } from '../../../app/use-cases/notification/update-notification-use-case';
 
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 import { NotificationRepositoryPrisma } from '../../repositories/notification/notification-repository-prisma';
 
 class UpdateNotificationController {

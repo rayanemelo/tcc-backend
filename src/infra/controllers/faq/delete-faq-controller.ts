@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
 import { DeleteFaqUseCase } from '../../../app/use-cases/faq/delete-faq-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 
 class DeleteFaqController {
   private deleteFaqUseCase: DeleteFaqUseCase;

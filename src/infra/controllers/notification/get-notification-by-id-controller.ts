@@ -3,7 +3,7 @@ import { GetNotificationByIdUseCase } from '../../../app/use-cases/notification/
 import { NotificationRepositoryPrisma } from '../../repositories/notification/notification-repository-prisma';
 
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 
 class GetNotificationByIdController {
   private getNotificationByIdUseCase: GetNotificationByIdUseCase;

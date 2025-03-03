@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { DeleteNotificationUseCase } from '../../../app/use-cases/notification/delete-notification-use-case';
 import { NotificationRepositoryPrisma } from '../../repositories/notification/notification-repository-prisma';
-import { paramIdSchema } from '../../types/param-id-schema';
+import { paramIdSchema } from '../../schemas/param-id-schema';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 
 class DeleteNotificationController {
