@@ -7,7 +7,7 @@ export class FaqRepositoryPrisma implements IFaqRepository {
     return await prisma.faq.findMany();
   }
 
-  async getById(id: number): Promise<FaqEntity | null> {
+  async getFaqById(id: number): Promise<FaqEntity | null> {
     return await prisma.faq.findUnique({
       where: {
         id: Number(id),

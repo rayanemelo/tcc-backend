@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
 import { UpdateFaqUseCase } from '../../../app/use-cases/faq/update-faq-use-case';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
+import { paramIdSchema } from '../../types/param-id-schema';
 
 class UpdateFaqController {
   private updateFaqUseCase: UpdateFaqUseCase;
@@ -12,13 +14,12 @@ class UpdateFaqController {
 
   handle = async (req: Request<{ id: number }>, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = paramIdSchema.parse(req.params);
       const faq = await this.updateFaqUseCase.execute(id, req.body);
 
       res.status(200).json(faq);
     } catch (error) {
-      console.error('error: ', error);
-      res.status(500).json({ message: 'Erro interno do servidor' });
+      GlobalExceptionHandler.handle(error, res);
     }
   };
 }

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
 import { DeleteFaqUseCase } from '../../../app/use-cases/faq/delete-faq-use-case';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
+import { paramIdSchema } from '../../types/param-id-schema';
 
 class DeleteFaqController {
   private deleteFaqUseCase: DeleteFaqUseCase;
@@ -12,13 +14,13 @@ class DeleteFaqController {
 
   handle = async (req: Request<{ id: number }>, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id } = paramIdSchema.parse(req.params);
+
       const faq = await this.deleteFaqUseCase.execute(id);
 
       res.status(200).json(faq);
     } catch (error) {
-      console.error('error: ', error);
-      res.status(500).json({ message: 'Erro interno do servidor' });
+      GlobalExceptionHandler.handle(error, res);
     }
   };
 }

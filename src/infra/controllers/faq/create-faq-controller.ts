@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
 import { CreateFaqUseCase } from '../../../app/use-cases/faq/create-faq-use-case';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
+import { z } from 'zod';
+
+const bodySchema = z.object({
+  question: z.string(),
+  answer: z.string(),
+});
 
 class CreateFaqController {
   private createFaqUseCase: CreateFaqUseCase;
@@ -12,12 +19,13 @@ class CreateFaqController {
 
   handle = async (req: Request, res: Response) => {
     try {
-      const faq = await this.createFaqUseCase.execute(req.body);
+      const body = bodySchema.parse(req.body);
+
+      const faq = await this.createFaqUseCase.execute(body);
 
       res.status(201).json(faq);
     } catch (error) {
-      console.error('error: ', error);
-      res.status(500).json({ message: 'Erro interno do servidor' });
+      GlobalExceptionHandler.handle(error, res);
     }
   };
 }

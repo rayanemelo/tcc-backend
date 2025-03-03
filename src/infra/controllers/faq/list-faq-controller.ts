@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ListFaqUseCase } from '../../../app/use-cases/faq/list-faq-use-case';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 
 class ListFaqController {
   private listFaqUseCase: ListFaqUseCase;
@@ -15,8 +16,7 @@ class ListFaqController {
       const faqs = await this.listFaqUseCase.execute();
       res.status(200).json(faqs);
     } catch (error) {
-      console.error('error: ', error);
-      res.status(500).json({ message: error });
+      GlobalExceptionHandler.handle(error, res);
     }
   };
 }
