@@ -11,9 +11,15 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["src/app/types", "./node_modules/@types", "src/config" ],
+    "typeRoots": [
+      "src/app/types",
+      "./node_modules/@types",
+      "src/config"
+    ]
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "src/tests/**/*",
     "**/*.mock.ts",
