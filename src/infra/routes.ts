@@ -15,7 +15,7 @@ import { getFloodAreaByIdController } from './controllers/flood-area/get-flood-a
 import { updateFloodAreaController } from './controllers/flood-area/update-flood-area-controller';
 import { deleteFloodAreaController } from './controllers/flood-area/delete-food-area-controller';
 import { createSessionUserAdminController } from './controllers/auth/auth-user-admin/create-session-user-admin-controller';
-import { createUserAdminController } from './controllers/user-admin/create-user-admin-controller';
+import { sendSmsCodeController } from './controllers/auth/auth-user/send-sms-code-controller';
 
 export class Routes {
   public router: Router;
@@ -47,16 +47,12 @@ export class Routes {
       deleteNotificationController.handle
     );
 
-    // this.router.post('/code', createCodeController.handle);
-    // this.router.put('/code/:id', updateCodeController.handle);
-    // this.router.get('/code/:id', getCodeByIdController.handle);
-
     this.router.post(
       '/auth-user-admin',
       createSessionUserAdminController.handle
     );
 
-    this.router.post('/user-admin', createUserAdminController.handle);
+    this.router.post('/auth-user', sendSmsCodeController.handle);
 
     return this.router;
   }

@@ -3,10 +3,10 @@ import { ICodeRepository } from '../../../domain/repositories/code/code-reposito
 import { prisma } from '../../database';
 
 export class CodeRepositoryPrisma implements ICodeRepository {
-  async getCodeById(id: number): Promise<CodeEntity | null> {
-    return await prisma.code.findUnique({
+  async getCodeByUserId(userId: number): Promise<CodeEntity | null> {
+    return await prisma.code.findFirst({
       where: {
-        id: Number(id),
+        userId: userId,
       },
     });
   }
@@ -17,12 +17,12 @@ export class CodeRepositoryPrisma implements ICodeRepository {
     });
   }
 
-  async updateCode(id: number, code: Partial<CodeEntity>): Promise<CodeEntity> {
+  async updateCode(id: number, data: Partial<CodeEntity>): Promise<CodeEntity> {
     return await prisma.code.update({
       where: {
         id: Number(id),
       },
-      data: code,
+      data: data,
     });
   }
 }

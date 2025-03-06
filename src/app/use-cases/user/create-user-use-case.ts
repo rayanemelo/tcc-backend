@@ -3,14 +3,14 @@ import { IUserRepository } from '../../../domain/repositories/user/user-reposito
 
 export type UserDTO = {
   phone: string;
-  codeId: number;
+  // codeId: number;
 };
 
 export class CreateUserUseCase {
-  constructor(private UserRepository: IUserRepository) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async execute(body: UserDTO): Promise<UserEntity> {
-    const user = await this.UserRepository.createUser(new UserEntity(body));
+    const user = await this.userRepository.createUser(new UserEntity(body));
     return user;
   }
 }

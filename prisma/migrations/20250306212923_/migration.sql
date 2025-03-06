@@ -51,7 +51,6 @@ CREATE TABLE "tb_user" (
     "active" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "code_id" INTEGER NOT NULL,
 
     CONSTRAINT "tb_user_pkey" PRIMARY KEY ("id")
 );
@@ -117,9 +116,6 @@ CREATE UNIQUE INDEX "tb_user_admin_password_attempts_user_admin_id_key" ON "tb_u
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tb_user_phone_key" ON "tb_user"("phone");
-
--- CreateIndex
-CREATE UNIQUE INDEX "tb_user_code_id_key" ON "tb_user"("code_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tb_code_user_id_key" ON "tb_code"("user_id");
