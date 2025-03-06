@@ -14,9 +14,8 @@ import { createFloodAreaController } from './controllers/flood-area/create-flood
 import { getFloodAreaByIdController } from './controllers/flood-area/get-flood-area-by-id-controller';
 import { updateFloodAreaController } from './controllers/flood-area/update-flood-area-controller';
 import { deleteFloodAreaController } from './controllers/flood-area/delete-food-area-controller';
-import { createCodeController } from './controllers/code/create-code-controller';
-import { updateCodeController } from './controllers/code/update-code-controller';
-import { getCodeByIdController } from './controllers/code/get-code-by-id-controller';
+import { createSessionUserAdminController } from './controllers/auth/auth-user-admin/create-session-user-admin-controller';
+import { createUserAdminController } from './controllers/user-admin/create-user-admin-controller';
 
 export class Routes {
   public router: Router;
@@ -48,9 +47,16 @@ export class Routes {
       deleteNotificationController.handle
     );
 
-    this.router.post('/code', createCodeController.handle);
-    this.router.put('/code/:id', updateCodeController.handle);
-    this.router.get('/code/:id', getCodeByIdController.handle);
+    // this.router.post('/code', createCodeController.handle);
+    // this.router.put('/code/:id', updateCodeController.handle);
+    // this.router.get('/code/:id', getCodeByIdController.handle);
+
+    this.router.post(
+      '/auth-user-admin',
+      createSessionUserAdminController.handle
+    );
+
+    this.router.post('/user-admin', createUserAdminController.handle);
 
     return this.router;
   }
