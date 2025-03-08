@@ -4,6 +4,12 @@ import { UpdateNotificationUseCase } from '../../../app/use-cases/notification/u
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { paramIdSchema } from '../../schemas/param-id-schema';
 import { NotificationRepositoryPrisma } from '../../repositories/notification/notification-repository-prisma';
+import { NotificationDTO } from '../../../app/use-cases/notification/create-notification-use-case';
+import { z } from 'zod';
+
+const bodySchema = z.object({
+  content: z.string().nonempty(),
+});
 
 class UpdateNotificationController {
   private updateNotificationUseCase: UpdateNotificationUseCase;
@@ -15,12 +21,17 @@ class UpdateNotificationController {
     );
   }
 
-  handle = async (req: Request<{ id: number }>, res: Response) => {
+  handle = async (
+    req: Request<{ id: number; body: NotificationDTO }>,
+    res: Response
+  ) => {
     try {
       const { id } = paramIdSchema.parse(req.params);
+      const body = bodySchema.parse(req.body);
+
       const notification = await this.updateNotificationUseCase.execute(
         id,
-        req.body
+        body
       );
 
       res.status(200).json(notification);

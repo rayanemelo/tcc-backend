@@ -17,7 +17,10 @@ class CreateFaqController {
     this.createFaqUseCase = new CreateFaqUseCase(faqRepository);
   }
 
-  handle = async (req: Request, res: Response) => {
+  handle = async (
+    req: Request<{ question: string; answer: string }>,
+    res: Response
+  ) => {
     try {
       const body = bodySchema.parse(req.body);
 

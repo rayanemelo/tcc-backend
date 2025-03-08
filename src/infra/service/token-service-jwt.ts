@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { ITokenService } from '../../domain/service/token-service';
 import { CONFIG } from '../utils/config';
 import { Exception } from '../exception/exception';
+import { messages } from '../config/messages';
 
 export class TokenServiceJWT implements ITokenService {
   private readonly config = CONFIG.auth;
@@ -17,7 +18,7 @@ export class TokenServiceJWT implements ITokenService {
     try {
       return jwt.verify(token, this.config.secret) as T;
     } catch (error) {
-      throw new Exception(401, 'Invalid token');
+      throw new Exception(401, messages.response.invalidToken);
     }
   }
 
@@ -31,7 +32,7 @@ export class TokenServiceJWT implements ITokenService {
     try {
       return jwt.verify(token, this.config.refreshSecret) as T;
     } catch (error) {
-      throw new Exception(401, 'Invalid token');
+      throw new Exception(401, messages.response.invalidToken);
     }
   }
 }

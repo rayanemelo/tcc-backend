@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { paramIdSchema } from '../../schemas/param-id-schema';
 import { UserRepositoryPrisma } from '../../repositories/user/user-repository-prisma';
@@ -12,11 +12,7 @@ class GetUserByIdController {
     this.getUserByIdUseCase = new GetUserByIdUseCase(userRepository);
   }
 
-  handle = async (
-    req: Request<{ id: number }>,
-    res: Response,
-    next: NextFunction
-  ) => {
+  handle = async (req: Request<{ id: number }>, res: Response) => {
     try {
       const { id } = paramIdSchema.parse(req.params);
 

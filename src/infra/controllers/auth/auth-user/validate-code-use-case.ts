@@ -4,6 +4,19 @@ import { CodeRepositoryPrisma } from '../../../repositories/code/code-repository
 import { UserRepositoryPrisma } from '../../../repositories/user/user-repository-prisma';
 import { TokenServiceJWT } from '../../../service/token-service-jwt';
 import { GlobalExceptionHandler } from '../../../exception/global-exception-handler';
+import { messages } from '../../../config/messages';
+import { z } from 'zod';
+
+const bodySchema = z.object({
+  phone: z
+    .string()
+    .min(10, { message: messages.validations.phoneMinLength })
+    .max(15, { message: messages.validations.phoneMaxLength })
+    .regex(/^\d+$/, {
+      message: messages.validations.phoneDigits,
+    }),
+  code: z.string(),
+});
 
 class ValidateCodeController {
   private validateCodeUseCase: ValidateCodeUseCase;
@@ -20,11 +33,12 @@ class ValidateCodeController {
   }
 
   handle = async (
-    request: Request<unknown, unknown, { phone: string; code: string }>,
+    request: Request<{ phone: string; code: string }>,
     response: Response
   ) => {
     try {
-      const { phone, code } = request.body;
+      const { phone, code } = bodySchema.parse(request.body);
+
       const token = await this.validateCodeUseCase.execute(phone, code);
 
       return response.status(200).json({ token });

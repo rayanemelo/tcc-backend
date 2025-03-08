@@ -1,0 +1,22 @@
+export const messages = {
+  response: {
+    limitExceeded: 'Limite de tentativas excedido',
+    userNotFound: 'Usuário não encontrado',
+    codeNotFound: 'Código não encontrado',
+    invalidCode: 'Código inválido',
+    expiredCode: 'Código expirado',
+    notAuthorized: 'Não autorizado',
+    inactiveUser:
+      'Usuário inativo. Entre em contato com o suporte para mais informações.',
+    faqNotFound: 'FAQ não encontrada',
+    floodAreaNotFound: 'Área de inundação não encontrada',
+    notificationNotFound: 'Notificação não encontrada',
+    internalServerError: 'Erro interno do servidor',
+    invalidToken: 'Token inválido',
+  },
+  validations: {
+    phoneMinLength: 'Número de celular deve ter pelo menos 10 dígitos.',
+    phoneMaxLength: 'Número de celular deve ter no máximo 15 dígitos.',
+    phoneDigits: 'Número de celular deve conter apenas dígitos.',
+  },
+};

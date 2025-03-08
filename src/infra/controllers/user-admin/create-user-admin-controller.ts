@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
-import { CreateUserAdminUseCase } from '../../../app/use-cases/user-admin/create-user-admin-use-case';
+import {
+  CreateUserAdminUseCase,
+  UserAdminDTO,
+} from '../../../app/use-cases/user-admin/create-user-admin-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { z } from 'zod';
 import { UserAdminRepositoryPrisma } from '../../repositories/user-admin/user-admin-prisma';
@@ -24,7 +27,7 @@ class CreateUserAdminController {
     this.hashService = new HashServiceBcrypt();
   }
 
-  handle = async (req: Request, res: Response) => {
+  handle = async (req: Request<UserAdminDTO>, res: Response) => {
     try {
       const body = bodySchema.parse(req.body);
 

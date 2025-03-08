@@ -2,16 +2,12 @@ import { IUserAdminRepository } from '../../../../domain/repositories/user-admin
 import { Exception } from '../../../../infra/exception/exception';
 import { IHashService } from '../../../../domain/service/hash-service';
 import { ITokenService } from '../../../../domain/service/token-service';
+import { messages } from '../../../../infra/config/messages';
 
 export type UserAdminResponseDTO = {
   id: number;
   name: string;
   active: boolean;
-};
-
-export type CreateSessionUserAdminDTO = {
-  email: string;
-  password: string;
 };
 
 export type SessionResponseDTO = {
@@ -26,22 +22,22 @@ export class CreateSessionUserAdminUseCase {
     private hashService: IHashService
   ) {}
 
-  async execute(data: CreateSessionUserAdminDTO): Promise<SessionResponseDTO> {
-    const userAdminExists = await this.userAdminRepository.findByEmail(
-      data.email
-    );
+  async execute(email: string, password: string): Promise<SessionResponseDTO> {
+    const userAdminExists = await this.userAdminRepository.findByEmail(email);
 
-    if (!userAdminExists) throw new Exception(404, 'User not found');
+    if (!userAdminExists)
+      throw new Exception(404, messages.response.userNotFound);
 
     const passwordMatch = await this.hashService.compare(
-      data.password,
+      password,
       userAdminExists.password
     );
 
-    if (!passwordMatch) throw new Exception(401, 'Not authorized');
+    if (!passwordMatch)
+      throw new Exception(401, messages.response.notAuthorized);
 
     if (!userAdminExists.active) {
-      throw new Exception(403, 'User is inactive');
+      throw new Exception(403, messages.response.inactiveUser);
     }
 
     const token = this.tokenService.generateToken({ id: userAdminExists.id });

@@ -4,6 +4,12 @@ import { UserAdminRepositoryPrisma } from '../../../repositories/user-admin/user
 import { GlobalExceptionHandler } from '../../../exception/global-exception-handler';
 import { HashServiceBcrypt } from '../../../service/hash-service-bcrypt';
 import { TokenServiceJWT } from '../../../service/token-service-jwt';
+import { z } from 'zod';
+
+const bodySchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 
 export class CreateSessionUserAdminController {
   private createSessionUserAdminUseCase: CreateSessionUserAdminUseCase;
@@ -20,10 +26,16 @@ export class CreateSessionUserAdminController {
     );
   }
 
-  handle = async (request: Request, response: Response) => {
+  handle = async (
+    request: Request<{ email: string; password: string }>,
+    response: Response
+  ) => {
     try {
+      const { email, password } = bodySchema.parse(request.body);
+
       const session = await this.createSessionUserAdminUseCase.execute(
-        request.body
+        email,
+        password
       );
 
       return response.status(200).json(session);

@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Exception } from './exception';
 import { ZodError } from 'zod';
+import { messages } from '../config/messages';
 
 export class GlobalExceptionHandler {
   static handle(error: unknown, res: Response) {
@@ -13,6 +14,6 @@ export class GlobalExceptionHandler {
     if (error instanceof Exception) {
       return res.status(error.code).json({ message: error.message });
     }
-    res.status(500).json({ message: 'Erro interno do servidor' });
+    res.status(500).json({ message: messages.response.internalServerError });
   }
 }

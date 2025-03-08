@@ -1,14 +1,25 @@
-import { IUserRepository } from '../../../domain/repositories/user/user-repository';
-import { Exception } from '../../../infra/exception/exception';
+import { Request, Response } from 'express';
+import { paramIdSchema } from '../../schemas/param-id-schema';
+import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
+import { UserRepositoryPrisma } from '../../repositories/user/user-repository-prisma';
+import { DeleteUserUseCase } from '../../../app/use-cases/user/delete-user-use-case';
 
-export class DeleteUserUseCase {
-  constructor(private userRepository: IUserRepository) {}
-
-  async execute(id: number): Promise<void> {
-    const userExists = await this.userRepository.getUserById(id);
-
-    if (!userExists) throw new Exception(404, 'User not found');
-
-    await this.userRepository.deleteUser(id);
+export class DeleteUserController {
+  private deleteUserUseCase: DeleteUserUseCase;
+  constructor() {
+    const userRepository = new UserRepositoryPrisma();
+    this.deleteUserUseCase = new DeleteUserUseCase(userRepository);
   }
+
+  handle = async (req: Request<{ id: number }>, res: Response) => {
+    try {
+      const { id } = paramIdSchema.parse(req.params);
+
+      const user = await this.deleteUserUseCase.execute(id);
+
+      res.status(200).json(user);
+    } catch (error) {
+      GlobalExceptionHandler.handle(error, res);
+    }
+  };
 }

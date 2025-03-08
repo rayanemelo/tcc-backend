@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { CreateFloodAreaUseCase } from '../../../app/use-cases/flood-area/create-flood-area-use-case';
+import {
+  CreateFloodAreaUseCase,
+  FloodAreaDTO,
+} from '../../../app/use-cases/flood-area/create-flood-area-use-case';
 import { z } from 'zod';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
@@ -23,7 +26,7 @@ class CreateFloodAreaController {
     );
   }
 
-  handle = async (req: Request, res: Response) => {
+  handle = async (req: Request<FloodAreaDTO>, res: Response) => {
     try {
       const body = bodySchema.parse(req.body);
 

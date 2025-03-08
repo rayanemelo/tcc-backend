@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { CreateNotificationUseCase } from '../../../app/use-cases/notification/create-notification-use-case';
 import { NotificationRepositoryPrisma } from '../../repositories/notification/notification-repository-prisma';
+import { z } from 'zod';
+
+const bodySchema = z.object({
+  content: z.string().nonempty(),
+});
 
 class CreateNotificationController {
   private createNotificationUseCase: CreateNotificationUseCase;
@@ -12,11 +17,10 @@ class CreateNotificationController {
     );
   }
 
-  handle = async (req: Request, res: Response) => {
+  handle = async (req: Request<{ content: string }>, res: Response) => {
     try {
-      const notification = await this.createNotificationUseCase.execute(
-        req.body
-      );
+      const body = bodySchema.parse(req.body);
+      const notification = await this.createNotificationUseCase.execute(body);
 
       res.status(201).json(notification);
     } catch (error) {

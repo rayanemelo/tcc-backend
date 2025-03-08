@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { FaqRepositoryPrisma } from '../../repositories/faq/faq-repository-prisma';
 import { GetFaqByIdUseCase } from '../../../app/use-cases/faq/get-faq-by-id-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
@@ -12,11 +12,7 @@ class GetFaqByIdController {
     this.getFaqByIdUseCase = new GetFaqByIdUseCase(faqRepository);
   }
 
-  handle = async (
-    req: Request<{ id: number }>,
-    res: Response,
-    next: NextFunction
-  ) => {
+  handle = async (req: Request<{ id: number }>, res: Response) => {
     try {
       const { id } = paramIdSchema.parse(req.params);
 

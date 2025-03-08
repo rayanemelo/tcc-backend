@@ -3,7 +3,6 @@ import { IUserRepository } from '../../../domain/repositories/user/user-reposito
 
 export type UserDTO = {
   phone: string;
-  // codeId: number;
 };
 
 export class CreateUserUseCase {

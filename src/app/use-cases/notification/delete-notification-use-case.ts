@@ -1,4 +1,5 @@
 import { INotificationRepository } from '../../../domain/repositories/notification/notification-repository';
+import { messages } from '../../../infra/config/messages';
 import { Exception } from '../../../infra/exception/exception';
 
 export class DeleteNotificationUseCase {
@@ -8,7 +9,8 @@ export class DeleteNotificationUseCase {
     const notificationExists =
       await this.notificationRepository.getNotificationById(id);
 
-    if (!notificationExists) throw new Exception(404, 'Notification not found');
+    if (!notificationExists)
+      throw new Exception(404, messages.response.notificationNotFound);
 
     await this.notificationRepository.deleteNotification(id);
   }

@@ -1,6 +1,7 @@
 import { ICodeRepository } from '../../../../domain/repositories/code/code-repository';
 import { IUserRepository } from '../../../../domain/repositories/user/user-repository';
 import { ITokenService } from '../../../../domain/service/token-service';
+import { messages } from '../../../../infra/config/messages';
 import { Exception } from '../../../../infra/exception/exception';
 
 export class ValidateCodeUseCase {
@@ -14,27 +15,33 @@ export class ValidateCodeUseCase {
     const user = await this.userRepository.getUserByPhone(phone);
 
     if (!user) {
-      throw new Exception(404, 'Usuário não encontrado');
+      throw new Exception(404, messages.response.userNotFound);
     }
 
     const codeEntity = await this.codeRepository.getCodeByUserId(user.id);
-    console.log('codeEntity: ', codeEntity);
 
     if (!codeEntity) {
-      throw new Exception(404, 'Código não encontrado');
+      throw new Exception(404, messages.response.codeNotFound);
     }
 
     if (codeEntity.code !== code) {
-      throw new Exception(400, 'Código inválido');
+      throw new Exception(400, messages.response.invalidCode);
     }
 
     const now = new Date();
 
     if (codeEntity.dateExp && now > codeEntity.dateExp) {
-      throw new Exception(400, 'Código expirado');
+      throw new Exception(400, messages.response.expiredCode);
     }
 
     const token = this.tokenService.generateToken({ id: user.id });
+
+    const twentyMinutes = 20 * 60 * 1000;
+
+    await this.codeRepository.updateCode(codeEntity.id, {
+      attemptsCount: 0,
+      dateExp: new Date(now.getTime() - twentyMinutes),
+    });
 
     return token;
   }

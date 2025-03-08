@@ -7,6 +7,10 @@ export class UserRepositoryPrisma implements IUserRepository {
     return await prisma.user.findMany();
   }
 
+  async getUserById(id: number): Promise<UserEntity | null> {
+    return await prisma.user.findUnique({ where: { id } });
+  }
+
   async getUserByPhone(phone: string): Promise<UserEntity | null> {
     return await prisma.user.findUnique({ where: { phone } });
   }
