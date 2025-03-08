@@ -19,4 +19,7 @@ export const messages = {
     phoneMaxLength: 'Número de celular deve ter no máximo 15 dígitos.',
     phoneDigits: 'Número de celular deve conter apenas dígitos.',
   },
+  sms: {
+    codeMessage: (code: string) => `Seu código de verificação é: ${code}`,
+  },
 };

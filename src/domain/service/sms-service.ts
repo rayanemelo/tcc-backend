@@ -1,3 +1,3 @@
 export interface ISmsService {
-  send(phone: string, data: any): Promise<void>;
+  send(phone: string, message: string): Promise<void>;
 }

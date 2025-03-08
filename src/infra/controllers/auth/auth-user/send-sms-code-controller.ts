@@ -3,7 +3,7 @@ import { SendSmsCodeUseCase } from '../../../../app/use-cases/auth/auth-user/sen
 import { GlobalExceptionHandler } from '../../../exception/global-exception-handler';
 import { CodeRepositoryPrisma } from '../../../repositories/code/code-repository-prisma';
 import { UserRepositoryPrisma } from '../../../repositories/user/user-repository-prisma';
-import { SmsService } from '../../../service/sms-code';
+import { SmsServiceTwilio } from '../../../service/sms-service-twilio';
 import { z } from 'zod';
 import { messages } from '../../../config/messages';
 
@@ -23,7 +23,7 @@ class SendSmsCodeController {
   constructor() {
     const userRepository = new UserRepositoryPrisma();
     const codeRepository = new CodeRepositoryPrisma();
-    const smsService = new SmsService();
+    const smsService = new SmsServiceTwilio();
     this.sendSmsCodeUseCase = new SendSmsCodeUseCase(
       userRepository,
       codeRepository,
