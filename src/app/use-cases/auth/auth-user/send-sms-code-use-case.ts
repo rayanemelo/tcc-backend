@@ -47,6 +47,7 @@ export class SendSmsCodeUseCase {
       code = await this.codeRepository.updateCode(code.id, {
         code: newCode,
         attemptsCount: code.attemptsCount + 1,
+        dateExp: new Date(now.getTime() + tenMinutes),
       });
     }
 

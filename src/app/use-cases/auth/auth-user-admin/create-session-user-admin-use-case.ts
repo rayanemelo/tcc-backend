@@ -2,8 +2,6 @@ import { IUserAdminRepository } from '../../../../domain/repositories/user-admin
 import { Exception } from '../../../../infra/exception/exception';
 import { IHashService } from '../../../../domain/service/hash-service';
 import { ITokenService } from '../../../../domain/service/token-service';
-import { HashServiceBcrypt } from '../../../../infra/service/hash-service-bcrypt';
-import { TokenServiceJWT } from '../../../../infra/service/token-service-jwt';
 
 export type UserAdminResponseDTO = {
   id: number;
@@ -22,13 +20,11 @@ export type SessionResponseDTO = {
 };
 
 export class CreateSessionUserAdminUseCase {
-  private readonly tokenService: ITokenService;
-  private readonly hashService: IHashService;
-
-  constructor(private userAdminRepository: IUserAdminRepository) {
-    this.hashService = new HashServiceBcrypt();
-    this.tokenService = new TokenServiceJWT();
-  }
+  constructor(
+    private userAdminRepository: IUserAdminRepository,
+    private tokenService: ITokenService,
+    private hashService: IHashService
+  ) {}
 
   async execute(data: CreateSessionUserAdminDTO): Promise<SessionResponseDTO> {
     const userAdminExists = await this.userAdminRepository.findByEmail(

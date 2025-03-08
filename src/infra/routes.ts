@@ -16,6 +16,7 @@ import { updateFloodAreaController } from './controllers/flood-area/update-flood
 import { deleteFloodAreaController } from './controllers/flood-area/delete-food-area-controller';
 import { createSessionUserAdminController } from './controllers/auth/auth-user-admin/create-session-user-admin-controller';
 import { sendSmsCodeController } from './controllers/auth/auth-user/send-sms-code-controller';
+import { validateCodeController } from './controllers/auth/auth-user/validate-code-use-case';
 
 export class Routes {
   public router: Router;
@@ -52,7 +53,8 @@ export class Routes {
       createSessionUserAdminController.handle
     );
 
-    this.router.post('/auth-user', sendSmsCodeController.handle);
+    this.router.post('/auth-user/send-sms', sendSmsCodeController.handle);
+    this.router.post('/auth-user/validate-code', validateCodeController.handle);
 
     return this.router;
   }
