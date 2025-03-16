@@ -34,7 +34,7 @@ export class FloodAreaEntity {
     this.address = data.address;
     this.latitude = data.latitude;
     this.longitude = data.longitude;
-    this.status = data.status;
+    this.status = data.status || 'pending';
     this.userId = data.userId;
     this.floodLevelId = data.floodLevelId;
     this.commentsAdmin = data.commentsAdmin || null;

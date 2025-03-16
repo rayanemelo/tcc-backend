@@ -53,6 +53,7 @@ export class SendSmsCodeUseCase {
     }
 
     const message = messages.sms.codeMessage(newCode);
-    await this.smsService.send(phone, message);
+    console.log('message: ', message);
+    // await this.smsService.send(phone, message);
   }
 }

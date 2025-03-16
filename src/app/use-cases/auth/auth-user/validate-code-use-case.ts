@@ -1,3 +1,4 @@
+import { UserEntity } from '../../../../domain/entities/user/user-entity';
 import { ICodeRepository } from '../../../../domain/repositories/code/code-repository';
 import { IUserRepository } from '../../../../domain/repositories/user/user-repository';
 import { ITokenService } from '../../../../domain/service/token-service';
@@ -11,7 +12,10 @@ export class ValidateCodeUseCase {
     private tokenService: ITokenService
   ) {}
 
-  async execute(phone: string, code: string): Promise<string> {
+  async execute(
+    phone: string,
+    code: string
+  ): Promise<{ token: string; user: UserEntity }> {
     const user = await this.userRepository.getUserByPhone(phone);
 
     if (!user) {
@@ -34,7 +38,7 @@ export class ValidateCodeUseCase {
       throw new Exception(400, messages.response.expiredCode);
     }
 
-    const token = this.tokenService.generateToken({ id: user.id });
+    const token = this.tokenService.generateToken({ user: user });
 
     const twentyMinutes = 20 * 60 * 1000;
 
@@ -43,6 +47,9 @@ export class ValidateCodeUseCase {
       dateExp: new Date(now.getTime() - twentyMinutes),
     });
 
-    return token;
+    return {
+      token,
+      user,
+    };
   }
 }

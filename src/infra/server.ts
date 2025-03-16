@@ -17,7 +17,7 @@ export class Server {
     this.app.use('/api', this.routes.initializeRoutes());
   }
 
-  start({ port = process.env.PORT || 3333 } = {}) {
+  start({ port = process.env.PORT || 3331 } = {}) {
     this.app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

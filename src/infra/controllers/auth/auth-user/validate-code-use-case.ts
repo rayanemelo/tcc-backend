@@ -39,9 +39,9 @@ class ValidateCodeController {
     try {
       const { phone, code } = bodySchema.parse(request.body);
 
-      const token = await this.validateCodeUseCase.execute(phone, code);
+      const res = await this.validateCodeUseCase.execute(phone, code);
 
-      return response.status(200).json({ token });
+      return response.status(200).json(res);
     } catch (error) {
       GlobalExceptionHandler.handle(error, response);
     }

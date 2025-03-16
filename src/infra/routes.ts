@@ -29,7 +29,11 @@ export class Routes {
   public initializeRoutes(): Router {
     this.router.get('/flood-area', listFloodAreaController.handle);
     this.router.get('/flood-area/:id', getFloodAreaByIdController.handle);
-    this.router.post('/flood-area', createFloodAreaController.handle);
+    this.router.post(
+      '/flood-area',
+      // authorize,
+      createFloodAreaController.handle
+    );
     this.router.put('/flood-area/:id', updateFloodAreaController.handle);
     this.router.delete('/flood-area/:id', deleteFloodAreaController.handle);
 

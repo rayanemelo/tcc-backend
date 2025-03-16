@@ -13,6 +13,7 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "src/app/types",
+      "src/infra/types",
       "./node_modules/@types",
       "src/config"
     ]
