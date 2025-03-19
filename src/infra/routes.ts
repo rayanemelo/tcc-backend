@@ -12,11 +12,12 @@ import { deleteNotificationController } from './controllers/notification/delete-
 import { listNotificationController } from './controllers/notification/list-notification-controller';
 import { createFloodAreaController } from './controllers/flood-area/create-flood-area-controller';
 import { getFloodAreaByIdController } from './controllers/flood-area/get-flood-area-by-id-controller';
-import { updateFloodAreaController } from './controllers/flood-area/update-flood-area-controller';
-import { deleteFloodAreaController } from './controllers/flood-area/delete-food-area-controller';
+
 import { createSessionUserAdminController } from './controllers/auth/auth-user-admin/create-session-user-admin-controller';
 import { sendSmsCodeController } from './controllers/auth/auth-user/send-sms-code-controller';
 import { validateCodeController } from './controllers/auth/auth-user/validate-code-use-case';
+import { authorize } from './middlewares/authorize';
+import { listUserHistoryController } from './controllers/user-history/list-user-history-controller';
 
 export class Routes {
   public router: Router;
@@ -31,11 +32,11 @@ export class Routes {
     this.router.get('/flood-area/:id', getFloodAreaByIdController.handle);
     this.router.post(
       '/flood-area',
-      // authorize,
+      authorize,
       createFloodAreaController.handle
     );
-    this.router.put('/flood-area/:id', updateFloodAreaController.handle);
-    this.router.delete('/flood-area/:id', deleteFloodAreaController.handle);
+    // this.router.put('/flood-area/:id', updateFloodAreaController.handle);
+    // this.router.delete('/flood-area/:id', deleteFloodAreaController.handle);
 
     this.router.get('/faq', listFaqController.handle);
     this.router.get('/faq/:id', getFaqByIdController.handle);
@@ -59,6 +60,12 @@ export class Routes {
 
     this.router.post('/auth-user/send-sms', sendSmsCodeController.handle);
     this.router.post('/auth-user/validate-code', validateCodeController.handle);
+
+    this.router.get(
+      '/user-history',
+      authorize,
+      listUserHistoryController.handle
+    );
 
     return this.router;
   }

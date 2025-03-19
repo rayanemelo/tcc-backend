@@ -6,14 +6,12 @@ import {
 import { z } from 'zod';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
-import { UserRepositoryPrisma } from '../../repositories/user/user-repository-prisma';
 
 const bodySchema = z.object({
   address: z.string(),
   latitude: z.string(),
   longitude: z.string(),
   status: z.string(),
-  userId: z.number(),
   floodLevelId: z.number(),
 });
 
@@ -21,21 +19,20 @@ class CreateFloodAreaController {
   private createFloodAreaUseCase: CreateFloodAreaUseCase;
 
   constructor() {
-    const userRepository = new UserRepositoryPrisma();
-
     const floodAreaRepository = new FloodAreaRepositoryPrisma();
     this.createFloodAreaUseCase = new CreateFloodAreaUseCase(
-      userRepository,
       floodAreaRepository
     );
   }
 
-  handle = async (req: Request<FloodAreaDTO>, res: Response) => {
+  handle = async (
+    req: Request<unknown, unknown, FloodAreaDTO>,
+    res: Response
+  ) => {
     try {
-      console.log('body: ', req.body);
       const body = bodySchema.parse(req.body);
 
-      const userId = req.body.userId;
+      const userId = req.userId;
 
       const floodArea = await this.createFloodAreaUseCase.execute(userId, body);
 
