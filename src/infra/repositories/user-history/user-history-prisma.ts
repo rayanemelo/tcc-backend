@@ -3,10 +3,6 @@ import { IUserHistoryRepository } from '../../../domain/repositories/user-histor
 import { prisma } from '../../database';
 
 export class UserHistoryRepositoryPrisma implements IUserHistoryRepository {
-  getUserHistoryById(id: number): Promise<UserHistoryEntities> {
-    throw new Error('Method not implemented.');
-  }
-
   async listUserHistory(userId: number): Promise<UserHistoryEntities[]> {
     const floodAreas = await prisma.floodArea.findMany({
       where: {

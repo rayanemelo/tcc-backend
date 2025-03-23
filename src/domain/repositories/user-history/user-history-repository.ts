@@ -2,5 +2,4 @@ import { UserHistoryEntities } from '../../entities/user-history/user-history-en
 
 export interface IUserHistoryRepository {
   listUserHistory(userId: number): Promise<UserHistoryEntities[]>;
-  getUserHistoryById(id: number): Promise<UserHistoryEntities>;
 }

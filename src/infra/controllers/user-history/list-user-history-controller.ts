@@ -16,10 +16,9 @@ class ListUserHistoryController {
   handle = async (req: Request, res: Response) => {
     try {
       const userId = req.userId;
-      console.log('userId: ', userId);
 
       const userHistories = await this.listUserHistoryUseCase.execute(userId);
-      console.log('userHistories: ', userHistories);
+
       res.status(200).json(userHistories);
     } catch (error) {
       GlobalExceptionHandler.handle(error, res);

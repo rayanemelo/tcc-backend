@@ -21,18 +21,4 @@ export class TokenServiceJWT implements ITokenService {
       throw new Exception(401, messages.response.invalidToken);
     }
   }
-
-  public generateRefreshToken<T extends object>(payload: T): string {
-    return jwt.sign(payload, this.config.refreshSecret, {
-      expiresIn: this.config.refreshExpiresIn,
-    });
-  }
-
-  public verifyRefreshToken<T>(token: string): T {
-    try {
-      return jwt.verify(token, this.config.refreshSecret) as T;
-    } catch (error) {
-      throw new Exception(401, messages.response.invalidToken);
-    }
-  }
 }

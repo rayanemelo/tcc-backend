@@ -13,7 +13,10 @@ class GetFloodAreaByIdController {
     );
   }
 
-  handle = async (req: Request<{ id: number }>, res: Response) => {
+  handle = async (
+    req: Request<unknown, unknown, { id: number }>,
+    res: Response
+  ) => {
     try {
       const { id } = paramIdSchema.parse(req.params);
 
