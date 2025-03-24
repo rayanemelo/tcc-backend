@@ -2,7 +2,7 @@ import { CodeEntity } from '../../../../domain/entities/code/code-entity';
 import { UserEntity } from '../../../../domain/entities/user/user-entity';
 import { ICodeRepository } from '../../../../domain/repositories/code/code-repository';
 import { IUserRepository } from '../../../../domain/repositories/user/user-repository';
-import { ISmsService } from '../../../../domain/service/sms-service';
+import { ISmsService } from '../../../../domain/services/sms-service';
 import { messages } from '../../../../infra/config/messages';
 import { Exception } from '../../../../infra/exception/exception';
 import { GenerateCode } from '../../../../infra/utils/generate-code';

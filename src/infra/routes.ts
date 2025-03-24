@@ -18,6 +18,7 @@ import { sendSmsCodeController } from './controllers/auth/auth-user/send-sms-cod
 import { validateCodeController } from './controllers/auth/auth-user/validate-code-use-case';
 import { authorize } from './middlewares/authorize';
 import { listUserHistoryController } from './controllers/user-history/list-user-history-controller';
+import { createImageFloodAreaController } from './controllers/images-flood-area/create-image-flood-area-controller';
 
 export class Routes {
   public router: Router;
@@ -69,6 +70,12 @@ export class Routes {
       '/user-history',
       authorize,
       listUserHistoryController.handle
+    );
+
+    this.router.post(
+      '/image',
+      // authorize,
+      createImageFloodAreaController.handle
     );
 
     return this.router;

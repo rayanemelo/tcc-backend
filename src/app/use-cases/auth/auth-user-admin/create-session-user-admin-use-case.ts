@@ -1,7 +1,7 @@
 import { IUserAdminRepository } from '../../../../domain/repositories/user-admin/user-admin-repository';
 import { Exception } from '../../../../infra/exception/exception';
-import { IHashService } from '../../../../domain/service/hash-service';
-import { ITokenService } from '../../../../domain/service/token-service';
+import { IHashService } from '../../../../domain/services/hash-service';
+import { ITokenService } from '../../../../domain/services/token-service';
 import { messages } from '../../../../infra/config/messages';
 
 export type UserAdminResponseDTO = {

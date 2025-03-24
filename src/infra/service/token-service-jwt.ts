@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { ITokenService } from '../../domain/service/token-service';
+import { ITokenService } from '../../domain/services/token-service';
 import { CONFIG } from '../utils/config';
 import { Exception } from '../exception/exception';
 import { messages } from '../config/messages';
