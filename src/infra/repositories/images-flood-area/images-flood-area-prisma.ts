@@ -17,16 +17,19 @@ export class ImageFloodAreaRepositoryPrisma
     });
   }
 
-  async getImages(floodAreaId: number): Promise<string[]> {
+  async getImages(floodAreaId: number): Promise<ImagesFloodAreaEntity[]> {
     const images = await prisma.images.findMany({
       where: {
         floodAreaId: floodAreaId,
       },
-      select: {
-        url: true,
-      },
     });
 
-    return images.map((image) => image.url);
+    return images.map((image) => ({
+      id: image.id,
+      floodAreaId: image.floodAreaId,
+      url: image.url,
+      createdAt: image.createdAt,
+      updatedAt: image.updatedAt,
+    }));
   }
 }

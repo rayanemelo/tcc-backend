@@ -19,6 +19,7 @@ import { validateCodeController } from './controllers/auth/auth-user/validate-co
 import { authorize } from './middlewares/authorize';
 import { listUserHistoryController } from './controllers/user-history/list-user-history-controller';
 import { createImageFloodAreaController } from './controllers/images-flood-area/create-image-flood-area-controller';
+import { getImagesFloodAreaController } from './controllers/images-flood-area/get-images-flood-area-controller';
 
 export class Routes {
   public router: Router;
@@ -74,9 +75,10 @@ export class Routes {
 
     this.router.post(
       '/image',
-      // authorize,
+      authorize,
       createImageFloodAreaController.handle
     );
+    this.router.get('/image/:floodAreaId', getImagesFloodAreaController.handle);
 
     return this.router;
   }

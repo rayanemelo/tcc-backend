@@ -5,5 +5,5 @@ export interface IImageFloodAreaRepository {
     floodAreaId: number,
     image: string
   ): Promise<ImagesFloodAreaEntity>;
-  getImages(id: number): Promise<string[]>;
+  getImages(floodAreaId: number): Promise<ImagesFloodAreaEntity[]>;
 }
