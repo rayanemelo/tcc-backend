@@ -6,6 +6,8 @@ import {
 import { z } from 'zod';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
+import { ImageStorageCloudinary } from '../../storages/image-storage-cloudinary';
+import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
 
 const bodySchema = z.object({
   address: z.string(),
@@ -13,6 +15,7 @@ const bodySchema = z.object({
   longitude: z.string(),
   status: z.string(),
   floodLevelId: z.number(),
+  image: z.string(),
 });
 
 class CreateFloodAreaController {
@@ -20,8 +23,12 @@ class CreateFloodAreaController {
 
   constructor() {
     const floodAreaRepository = new FloodAreaRepositoryPrisma();
+    const imageFloodAreaRepository = new ImageFloodAreaRepositoryPrisma();
+    const imageStorageRepository = new ImageStorageCloudinary();
     this.createFloodAreaUseCase = new CreateFloodAreaUseCase(
-      floodAreaRepository
+      floodAreaRepository,
+      imageFloodAreaRepository,
+      imageStorageRepository
     );
   }
 

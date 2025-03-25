@@ -41,8 +41,15 @@ export class Routes {
       authorize,
       createFloodAreaController.handle
     );
-    // this.router.put('/flood-area/:id', updateFloodAreaController.handle);
-    // this.router.delete('/flood-area/:id', deleteFloodAreaController.handle);
+    this.router.post(
+      '/flood-area/image',
+      authorize,
+      createImageFloodAreaController.handle
+    );
+    this.router.get(
+      '/flood-area/:floodAreaId/images',
+      getImagesFloodAreaController.handle
+    );
 
     this.router.get('/faq', listFaqController.handle);
     this.router.get('/faq/:id', getFaqByIdController.handle);
@@ -72,13 +79,6 @@ export class Routes {
       authorize,
       listUserHistoryController.handle
     );
-
-    this.router.post(
-      '/image',
-      authorize,
-      createImageFloodAreaController.handle
-    );
-    this.router.get('/image/:floodAreaId', getImagesFloodAreaController.handle);
 
     return this.router;
   }
