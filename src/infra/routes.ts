@@ -33,7 +33,7 @@ export class Routes {
   public initializeRoutes(): Router {
     this.router.get('/flood-area', listFloodAreaController.handle);
     this.router.get(
-      '/flood-area/:active',
+      '/flood-area/active',
       listActiveFloodAreasController.handle
     );
     this.router.get(

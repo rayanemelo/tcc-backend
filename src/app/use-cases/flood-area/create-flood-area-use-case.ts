@@ -59,11 +59,10 @@ export class CreateFloodAreaUseCase {
     const imageFloodArea =
       await this.imageStorageRepository.uploadImageBase64(image);
 
-    const imageEntity =
-      await this.imageFloodAreaRepository.createImageFloodArea(
-        floodArea.id,
-        imageFloodArea
-      );
+    await this.imageFloodAreaRepository.createImageFloodArea(
+      floodArea.id,
+      imageFloodArea
+    );
 
     return {
       ...floodArea,
