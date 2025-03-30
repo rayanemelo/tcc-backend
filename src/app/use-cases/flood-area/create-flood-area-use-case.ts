@@ -28,12 +28,12 @@ export type FloodAreaResponseDTO = {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  image: {
-    id: number;
-    url: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  // image: {
+  //   id: number;
+  //   url: string;
+  //   createdAt: Date;
+  //   updatedAt: Date;
+  // };
 };
 
 export class CreateFloodAreaUseCase {
@@ -67,7 +67,7 @@ export class CreateFloodAreaUseCase {
 
     return {
       ...floodArea,
-      image: imageEntity,
+      // image: imageEntity,
     };
   }
 }

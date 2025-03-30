@@ -20,6 +20,7 @@ import { authorize } from './middlewares/authorize';
 import { listUserHistoryController } from './controllers/user-history/list-user-history-controller';
 import { createImageFloodAreaController } from './controllers/images-flood-area/create-image-flood-area-controller';
 import { getImagesFloodAreaController } from './controllers/images-flood-area/get-images-flood-area-controller';
+import { listActiveFloodAreasController } from './controllers/flood-area/list-active-flood-area-controller';
 
 export class Routes {
   public router: Router;
@@ -31,6 +32,10 @@ export class Routes {
 
   public initializeRoutes(): Router {
     this.router.get('/flood-area', listFloodAreaController.handle);
+    this.router.get(
+      '/flood-area/:active',
+      listActiveFloodAreasController.handle
+    );
     this.router.get(
       '/flood-area/:id',
       authorize,
