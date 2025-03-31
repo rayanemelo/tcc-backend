@@ -17,6 +17,8 @@ export class FloodAreaRepositoryPrisma implements IFloodAreaRepository {
             : param?.active === 'inactive'
               ? false
               : undefined,
+        status: param?.status,
+        userId: param?.userId ? Number(param.userId) : undefined,
       },
     });
   }

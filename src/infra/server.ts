@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { Express } from 'express';
 import { Routes } from './routes';
+import morgan from 'morgan';
 
 export class Server {
   private readonly app: Express;
@@ -12,6 +13,7 @@ export class Server {
   }
 
   private initialize() {
+    this.app.use(morgan('dev'));
     this.app.use(
       express.json({
         limit: '100mb',

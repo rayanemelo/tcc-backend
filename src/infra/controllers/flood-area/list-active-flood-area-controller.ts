@@ -4,7 +4,7 @@ import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-a
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
 
-class ListActiveFloodAreas {
+class ListActiveFloodAreasController {
   private listActiveFloodAreaUseCase: ListActiveFloodAreaUseCase;
 
   constructor() {
@@ -23,9 +23,9 @@ class ListActiveFloodAreas {
       res.status(200).json(listActiveFloodAreas);
     } catch (error) {
       GlobalExceptionHandler.handle(error, res);
-      ('');
     }
   };
 }
 
-export const listActiveFloodAreasController = new ListActiveFloodAreas();
+export const listActiveFloodAreasController =
+  new ListActiveFloodAreasController();

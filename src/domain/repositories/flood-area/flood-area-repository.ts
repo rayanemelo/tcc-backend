@@ -2,6 +2,7 @@ import { FloodAreaEntity } from '../../entities/flood-area/flood-area-entity';
 
 export type ListFloodAreaParams = {
   active?: 'active' | 'inactive' | 'all';
+  status?: 'completed' | 'pending' | 'rejected';
   userId?: number;
 };
 

@@ -21,6 +21,7 @@ import { listUserHistoryController } from './controllers/user-history/list-user-
 import { createImageFloodAreaController } from './controllers/images-flood-area/create-image-flood-area-controller';
 import { getImagesFloodAreaController } from './controllers/images-flood-area/get-images-flood-area-controller';
 import { listActiveFloodAreasController } from './controllers/flood-area/list-active-flood-area-controller';
+import { listPendingFloodAreaByUserIdController } from './controllers/flood-area/list-pending-flood-area-by-user-id-controller';
 
 export class Routes {
   public router: Router;
@@ -41,6 +42,15 @@ export class Routes {
       authorize,
       getFloodAreaByIdController.handle
     );
+    this.router.get(
+      '/flood-area/user/pending',
+      authorize,
+      listPendingFloodAreaByUserIdController.handle
+    );
+    this.router.get(
+      '/flood-area/:floodAreaId/images',
+      getImagesFloodAreaController.handle
+    );
     this.router.post(
       '/flood-area',
       authorize,
@@ -50,10 +60,6 @@ export class Routes {
       '/flood-area/image',
       authorize,
       createImageFloodAreaController.handle
-    );
-    this.router.get(
-      '/flood-area/:floodAreaId/images',
-      getImagesFloodAreaController.handle
     );
 
     this.router.get('/faq', listFaqController.handle);

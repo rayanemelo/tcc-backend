@@ -1,20 +1,21 @@
 import { IFloodAreaRepository } from '../../../domain/repositories/flood-area/flood-area-repository';
 import { IImageFloodAreaRepository } from '../../../domain/repositories/images-flood-area-storage/images-flood-area-repository';
 
-export class ListActiveFloodAreaUseCase {
+export class ListPendingFloodAreaByUserIdUseCase {
   constructor(
     private floodAreaRepository: IFloodAreaRepository,
     private imageFloodAreaRepository: IImageFloodAreaRepository
   ) {}
 
-  async execute() {
-    const activeFloodAreas = await this.floodAreaRepository.listFloodAreas({
+  async execute(userId: number) {
+    const pendingFloodAreas = await this.floodAreaRepository.listFloodAreas({
+      userId: Number(userId),
       active: 'active',
-      status: 'completed',
+      status: 'pending',
     });
 
-    const activeFloodAreasWithImages = await Promise.all(
-      activeFloodAreas.map(async (floodArea) => {
+    const pendingFloodAreasWithImages = await Promise.all(
+      pendingFloodAreas.map(async (floodArea) => {
         const images = await this.imageFloodAreaRepository.getImages(
           floodArea.id
         );
@@ -25,6 +26,6 @@ export class ListActiveFloodAreaUseCase {
       })
     );
 
-    return activeFloodAreasWithImages;
+    return pendingFloodAreasWithImages;
   }
 }
