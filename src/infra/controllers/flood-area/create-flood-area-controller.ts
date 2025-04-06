@@ -16,6 +16,10 @@ const bodySchema = z.object({
   status: z.string(),
   floodLevelId: z.number(),
   image: z.string(),
+  userLocation: z.object({
+    latitude: z.string(),
+    longitude: z.string(),
+  }),
 });
 
 class CreateFloodAreaController {

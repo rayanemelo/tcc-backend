@@ -4,6 +4,7 @@ import { IImageStorageRepository } from '../../../domain/repositories/images-flo
 import { IImageFloodAreaRepository } from '../../../domain/repositories/images-flood-area-storage/images-flood-area-repository';
 import { Exception } from '../../../infra/exception/exception';
 import { Base64 } from '../../../infra/utils/base-64';
+import { isWithinRadius } from '../../../infra/utils/is-within-radius';
 
 export type FloodAreaDTO = {
   address: string;
@@ -12,6 +13,10 @@ export type FloodAreaDTO = {
   status: string;
   floodLevelId: number;
   image: string;
+  userLocation: {
+    latitude: string;
+    longitude: string;
+  };
 };
 
 export type FloodAreaResponseDTO = {
@@ -47,6 +52,22 @@ export class CreateFloodAreaUseCase {
     userId: number,
     body: FloodAreaDTO
   ): Promise<FloodAreaResponseDTO> {
+    const { latitude, longitude, userLocation } = body;
+
+    const coordinates = {
+      latArea: Number(latitude),
+      lonArea: Number(longitude),
+      latUser: Number(userLocation.latitude),
+      lonUser: Number(userLocation.longitude),
+    };
+
+    if (!isWithinRadius(coordinates)) {
+      throw new Exception(
+        400,
+        'Flood area location is not within the user location radius'
+      );
+    }
+
     const floodArea = await this.floodAreaRepository.createFloodArea(
       new FloodAreaEntity({ ...body, userId })
     );
