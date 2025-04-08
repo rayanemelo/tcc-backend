@@ -22,6 +22,8 @@ import { createImageFloodAreaController } from './controllers/images-flood-area/
 import { getImagesFloodAreaController } from './controllers/images-flood-area/get-images-flood-area-controller';
 import { listActiveFloodAreasController } from './controllers/flood-area/list-active-flood-area-controller';
 import { listPendingFloodAreaByUserIdController } from './controllers/flood-area/list-pending-flood-area-by-user-id-controller';
+import { updateFloodAreaByUserController } from './controllers/flood-area/update-flood-area-by-user-controller';
+import { updateFloodAreaByAdminController } from './controllers/flood-area/update-flood-area-by-admin-controller';
 
 export class Routes {
   public router: Router;
@@ -60,6 +62,15 @@ export class Routes {
       '/flood-area/image',
       authorize,
       createImageFloodAreaController.handle
+    );
+    this.router.patch(
+      '/flood-area/user/alert-response',
+      authorize,
+      updateFloodAreaByUserController.handle
+    );
+    this.router.patch(
+      '/flood-area/admin/:id',
+      updateFloodAreaByAdminController.handle
     );
 
     this.router.get('/faq', listFaqController.handle);

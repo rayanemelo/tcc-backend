@@ -36,4 +36,16 @@ export class FloodAreaRepositoryPrisma implements IFloodAreaRepository {
       data: floodArea,
     });
   }
+
+  async updateFloodArea(
+    id: number,
+    floodArea: Partial<FloodAreaEntity>
+  ): Promise<FloodAreaEntity> {
+    return await prisma.floodArea.update({
+      where: {
+        id: Number(id),
+      },
+      data: floodArea,
+    });
+  }
 }
