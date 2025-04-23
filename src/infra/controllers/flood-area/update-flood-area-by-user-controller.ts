@@ -13,7 +13,7 @@ const bodySchema = z.object({
   id: z.coerce.number(),
   yesCount: z.number(),
   noCount: z.number(),
-  image: z.string(),
+  // image: z.string(),
 });
 
 class UpdateFloodAreaByUserController {

@@ -7,7 +7,7 @@ export type UpdateFloodAreaByUserDTO = {
   id: number;
   yesCount: number;
   noCount: number;
-  image: string;
+  // image: string;
 };
 
 export class UpdateFloodAreaByUserUseCase {
@@ -26,9 +26,9 @@ export class UpdateFloodAreaByUserUseCase {
 
     const floodArea = await this.floodAreaRepository.updateFloodArea(id, body);
 
-    if (body.image) {
-      await this.imageFloodAreaRepository.createImageFloodArea(id, body.image);
-    }
+    // if (body.image) {
+    //   await this.imageFloodAreaRepository.createImageFloodArea(id, body.image);
+    // }
 
     return floodArea;
   }
