@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import { AxiosError } from 'axios';
 
 export function handleRequestError(error: AxiosError) {
   if (error.response) {
@@ -14,10 +14,10 @@ export function handleRequestError(error: AxiosError) {
         },
         response: JSON.stringify(error.response.data),
       })
-    )
+    );
   } else if (error.request) {
-    console.error('Request failed without response. ', error)
+    console.error('Request failed without response. ', error);
   } else {
-    console.error('Request failed due to unknown error. ', error)
+    console.error('Request failed due to unknown error. ', error);
   }
 }
