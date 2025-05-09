@@ -2,7 +2,7 @@ import { FaqMockFactory } from '../../../../test/factories/faq/faq-factory-mock'
 import { FaqRepositoryMock } from '../../../../test/repositories/faq/faq-repository-mock';
 import { ListFaqUseCase } from '../list-faq-use-case';
 
-describe('ListFaqUseCase', () => {
+describe('List FAQs Use Case', () => {
   let useCase: ListFaqUseCase;
 
   beforeEach(() => {

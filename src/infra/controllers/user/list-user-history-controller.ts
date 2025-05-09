@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ListUserHistoryUseCase } from '../../../app/use-cases/user-history/list-user-history-use-case';
+import { ListUserHistoryUseCase } from '../../../app/use-cases/user/list-user-history-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { UserHistoryRepositoryPrisma } from '../../repositories/user-history/user-history-prisma';
 

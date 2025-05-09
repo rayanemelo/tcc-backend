@@ -17,7 +17,7 @@ import { createSessionUserAdminController } from './controllers/auth/auth-user-a
 import { sendSmsCodeController } from './controllers/auth/auth-user/send-sms-code-controller';
 import { validateCodeController } from './controllers/auth/auth-user/validate-code-use-case';
 import { authorize } from './middlewares/authorize';
-import { listUserHistoryController } from './controllers/user-history/list-user-history-controller';
+import { listUserHistoryController } from './controllers/user/list-user-history-controller';
 import { createImageFloodAreaController } from './controllers/images-flood-area/create-image-flood-area-controller';
 import { getImagesFloodAreaController } from './controllers/images-flood-area/get-images-flood-area-controller';
 import { listActiveFloodAreasController } from './controllers/flood-area/list-active-flood-area-controller';

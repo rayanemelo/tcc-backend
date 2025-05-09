@@ -8,10 +8,12 @@ export class UpdateUserUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute(id: number, body: UserDTO): Promise<UserEntity> {
-    const user = await this.userRepository.updateUser(id, body);
+    const existingUser = await this.userRepository.getUserById(id);
 
-    if (!user) throw new Exception(404, messages.response.userNotFound);
+    if (!existingUser) throw new Exception(404, messages.response.userNotFound);
 
-    return user;
+    const updatedUser = await this.userRepository.updateUser(id, body);
+
+    return updatedUser;
   }
 }
