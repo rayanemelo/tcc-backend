@@ -13,6 +13,8 @@ export const messages = {
     notificationNotFound: 'Notificação não encontrada',
     internalServerError: 'Erro interno do servidor',
     invalidToken: 'Token inválido',
+    notCreated: 'Não foi possível criar o usuário',
+    faqNotCreated: 'Não foi possível criar o FAQ',
   },
   validations: {
     phoneMinLength: 'Número de celular deve ter pelo menos 10 dígitos.',

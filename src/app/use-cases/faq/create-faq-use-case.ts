@@ -11,6 +11,7 @@ export class CreateFaqUseCase {
 
   async execute(body: FaqDTO): Promise<FaqEntity> {
     const faq = await this.faqRepository.createFaq(new FaqEntity(body));
+
     return faq;
   }
 }
