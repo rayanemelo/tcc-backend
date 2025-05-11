@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { z } from 'zod';
-import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
 import {
   UpdateFloodAreaByUserDTO,
   UpdateFloodAreaByUserUseCase,
@@ -21,10 +20,8 @@ class UpdateFloodAreaByUserController {
 
   constructor() {
     const floodAreaRepository = new FloodAreaRepositoryPrisma();
-    const imageFloodAreaRepository = new ImageFloodAreaRepositoryPrisma();
     this.updateFloodAreaByUserUseCase = new UpdateFloodAreaByUserUseCase(
-      floodAreaRepository,
-      imageFloodAreaRepository
+      floodAreaRepository
     );
   }
 
@@ -33,14 +30,9 @@ class UpdateFloodAreaByUserController {
     res: Response
   ) => {
     try {
-      const userId = req.userId;
-
       const body = bodySchema.parse(req.body);
 
-      const floodArea = await this.updateFloodAreaByUserUseCase.execute(
-        userId,
-        body
-      );
+      const floodArea = await this.updateFloodAreaByUserUseCase.execute(body);
 
       res.status(200).json(floodArea);
     } catch (error) {

@@ -16,32 +16,31 @@ describe('List Active Flood Area ID Use Case', () => {
   });
 
   it('should list active flood areas successfully', async () => {
-    const mockFloodAreas = FloodAreaMockFactory.createEntities(5);
-    const mockImages = ImagesFloodAreaMockFactory.createEntity();
+    const mockFloodAreas = FloodAreaMockFactory.createEntities(3);
+    const mockImages = [ImagesFloodAreaMockFactory.createEntity()];
+
+    FloodAreaRepositoryMock.listFloodAreas.mockResolvedValue(mockFloodAreas);
+
+    ImagesFloodAreaRepositoryMock.getImages.mockResolvedValue(mockImages);
+
+    const result = await useCase.execute();
+
+    expect(FloodAreaRepositoryMock.listFloodAreas).toHaveBeenCalledWith({
+      active: 'active',
+      status: 'completed',
+    });
+
+    expect(ImagesFloodAreaRepositoryMock.getImages).toHaveBeenCalledTimes(3);
+    mockFloodAreas.forEach((floodArea, index) => {
+      expect(ImagesFloodAreaRepositoryMock.getImages).toHaveBeenCalledWith(
+        floodArea.id
+      );
+      expect(result[index]).toEqual({
+        ...floodArea,
+        images: mockImages,
+      });
+    });
+
+    expect(result).toHaveLength(3);
   });
-
-  // it('should get a flood area by id successfully', async () => {
-  //   // Arrange
-  //   const mockFloodArea = FloodAreaMockFactory.createEntity();
-
-  //   FloodAreaRepositoryMock.getFloodAreaById.mockResolvedValueOnce(
-  //     mockFloodArea
-  //   );
-
-  //   // Act
-  //   const result = await useCase.execute(mockFloodArea.id);
-
-  //   // Assert
-  //   expect(result).toEqual(mockFloodArea);
-  // });
-
-  // it('should throw an exception when flood area is not found', async () => {
-  //   // Arrange
-  //   const mockFloodAreaId = faker.number.int();
-
-  //   FloodAreaRepositoryMock.getFloodAreaById.mockResolvedValueOnce(null);
-
-  //   // Act & Assert
-  //   await expect(useCase.execute(mockFloodAreaId)).rejects.toThrow(Exception);
-  // });
 });

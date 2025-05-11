@@ -1,5 +1,4 @@
 import { IFloodAreaRepository } from '../../../domain/repositories/flood-area/flood-area-repository';
-import { IImageFloodAreaRepository } from '../../../domain/repositories/images-flood-area-storage/images-flood-area-repository';
 import { messages } from '../../../infra/config/messages';
 import { Exception } from '../../../infra/exception/exception';
 
@@ -11,12 +10,9 @@ export type UpdateFloodAreaByUserDTO = {
 };
 
 export class UpdateFloodAreaByUserUseCase {
-  constructor(
-    private floodAreaRepository: IFloodAreaRepository,
-    private imageFloodAreaRepository: IImageFloodAreaRepository
-  ) {}
+  constructor(private floodAreaRepository: IFloodAreaRepository) {}
 
-  async execute(userId: number, body: UpdateFloodAreaByUserDTO) {
+  async execute(body: UpdateFloodAreaByUserDTO) {
     const { id } = body;
 
     const floodAreaExists = await this.floodAreaRepository.getFloodAreaById(id);
@@ -25,10 +21,6 @@ export class UpdateFloodAreaByUserUseCase {
       throw new Exception(404, messages.response.floodAreaNotFound);
 
     const floodArea = await this.floodAreaRepository.updateFloodArea(id, body);
-
-    // if (body.image) {
-    //   await this.imageFloodAreaRepository.createImageFloodArea(id, body.image);
-    // }
 
     return floodArea;
   }
