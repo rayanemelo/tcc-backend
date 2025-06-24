@@ -20,6 +20,9 @@ export class Server {
       })
     );
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.get('/health', (_, res) => {
+      res.status(200).json({ status: 'ok' });
+    });
     this.app.use('/api', this.routes.initializeRoutes());
   }
 
