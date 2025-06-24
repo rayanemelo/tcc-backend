@@ -11,7 +11,8 @@
     "test": "jest --passWithNoTests --coverage",
     "build": "tsup src --out-dir dist",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "ts:check": "npx tsc --noEmit"
+    "ts:check": "npx tsc --noEmit",
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",
