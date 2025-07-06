@@ -1,0 +1,19 @@
+# Node modules
+node_modules
+ 
+ 
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# IDEs / Editors
+.vscode
+.idea
+
+# Build outputs
+dist
+coverage

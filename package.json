@@ -1,8 +1,8 @@
 {
-  "name": "auth-service",
-  "description": "Authentication Service",
+  "name": "tcc-backend",
+  "description": "TCC Backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "main.ts",
   "author": "Rayane Melo",
   "license": "MIT",
   "private": true,

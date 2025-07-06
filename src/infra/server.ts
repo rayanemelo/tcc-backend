@@ -24,6 +24,9 @@ export class Server {
       res.status(200).json({ status: 'ok' });
     });
     this.app.use('/api', this.routes.initializeRoutes());
+    this.app.get('/', (_, res) => {
+      res.status(200).json({ status: 'ok' });
+    });
   }
 
   start({ port = process.env.PORT || 3331 } = {}) {
