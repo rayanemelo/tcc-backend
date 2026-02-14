@@ -5,9 +5,18 @@ import { GlobalExceptionHandler } from '../../exception/global-exception-handler
 import { z } from 'zod';
 
 const bodySchema = z.object({
-  question: z.string(),
-  answer: z.string(),
+  question: z
+    .string()
+    .trim()
+    .min(1, 'Pergunta é obrigatória')
+    .max(500, 'Pergunta deve ter no máximo 500 caracteres'),
+  answer: z
+    .string()
+    .trim()
+    .min(1, 'Resposta é obrigatória')
+    .max(1000, 'Resposta deve ter no máximo 1000 caracteres'),
 });
+
 
 class CreateFaqController {
   private createFaqUseCase: CreateFaqUseCase;

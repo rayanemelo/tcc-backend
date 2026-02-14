@@ -3,13 +3,16 @@ import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-a
 import { GetFloodAreaByIdUseCase } from '../../../app/use-cases/flood-area/get-flood-area-by-id-use-case';
 import { GlobalExceptionHandler } from '../../exception/global-exception-handler';
 import { paramIdSchema } from '../../schemas/param-id-schema';
+import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
 
 class GetFloodAreaByIdController {
   private getFloodAreaByIdUseCase: GetFloodAreaByIdUseCase;
   constructor() {
     const floodAreaRepository = new FloodAreaRepositoryPrisma();
+    const imageFloodAreaRepository = new ImageFloodAreaRepositoryPrisma();
     this.getFloodAreaByIdUseCase = new GetFloodAreaByIdUseCase(
-      floodAreaRepository
+      floodAreaRepository,
+      imageFloodAreaRepository
     );
   }
 

@@ -41,7 +41,7 @@ export class Routes {
     );
     this.router.get(
       '/flood-area/:id',
-      authorize,
+      // authorize,
       getFloodAreaByIdController.handle
     );
     this.router.get(
@@ -69,7 +69,7 @@ export class Routes {
       updateFloodAreaByUserController.handle
     );
     this.router.patch(
-      '/flood-area/admin/:id',
+      '/flood-area/:id',
       updateFloodAreaByAdminController.handle
     );
 

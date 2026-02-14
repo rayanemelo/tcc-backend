@@ -4,7 +4,7 @@ import { prisma } from '../../database';
 
 export class FaqRepositoryPrisma implements IFaqRepository {
   async listFaqs(): Promise<FaqEntity[]> {
-    return await prisma.faq.findMany();
+    return await prisma.faq.findMany({ orderBy: { createdAt: 'desc' } });
   }
 
   async getFaqById(id: number): Promise<FaqEntity | null> {

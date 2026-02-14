@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { Express } from 'express';
 import { Routes } from './routes';
 import morgan from 'morgan';
+import cors from 'cors';
 
 export class Server {
   private readonly app: Express;
@@ -19,6 +20,10 @@ export class Server {
         limit: '100mb',
       })
     );
+    this.app.use(cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    }))
     this.app.use(express.urlencoded({ extended: true }));
     this.app.get('/health', (_, res) => {
       res.status(200).json({ status: 'ok' });
