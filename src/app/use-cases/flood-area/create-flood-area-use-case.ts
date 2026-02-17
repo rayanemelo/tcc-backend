@@ -2,9 +2,11 @@ import { FloodAreaEntity } from '../../../domain/entities/flood-area/flood-area-
 import { IFloodAreaRepository } from '../../../domain/repositories/flood-area/flood-area-repository';
 import { IImageStorageRepository } from '../../../domain/repositories/images-flood-area-storage/image-storage-repository';
 import { IImageFloodAreaRepository } from '../../../domain/repositories/images-flood-area-storage/images-flood-area-repository';
+import { IFloodAreaAiAnalysisRepository } from '../../../domain/repositories/flood-area-ai-analysis/flood-area-ai-analysis-repository';
 import { Exception } from '../../../infra/exception/exception';
 import { Base64 } from '../../../infra/utils/base-64';
 import { isWithinRadius } from '../../../infra/utils/is-within-radius';
+import { FloodAreaAiAnalysisEntity } from '../../../domain/entities/flood-area-ai-analysis/flood-area-ai-analysis-entity';
 
 export type FloodAreaDTO = {
   address: string;
@@ -33,20 +35,16 @@ export type FloodAreaResponseDTO = {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  // image: {
-  //   id: number;
-  //   url: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
-  // };
+  aiAnalysis: FloodAreaAiAnalysisEntity;
 };
 
 export class CreateFloodAreaUseCase {
   constructor(
     private floodAreaRepository: IFloodAreaRepository,
     private imageFloodAreaRepository: IImageFloodAreaRepository,
-    private imageStorageRepository: IImageStorageRepository
-  ) {}
+    private imageStorageRepository: IImageStorageRepository,
+    private floodAreaAiAnalysisRepository: IFloodAreaAiAnalysisRepository
+  ) { }
 
   async execute(
     userId: number,
@@ -68,17 +66,23 @@ export class CreateFloodAreaUseCase {
       );
     }
 
-    const floodArea = await this.floodAreaRepository.createFloodArea(
-      new FloodAreaEntity({ ...body, userId })
-    );
-
     const { image } = body;
     const isBase64Image = Base64.isBase64Image(image);
 
     if (!isBase64Image) throw new Exception(400, 'Image is not a valid base64');
 
-    const imageFloodArea =
-      await this.imageStorageRepository.uploadImageBase64(image);
+    const imageFloodArea = 'https://res.cloudinary.com/dvtdzsvtl/image/upload/v1746237999/irxsy2jiejjaekmqr0je.jpg'
+    // const imageFloodArea =
+    //   await this.imageStorageRepository.uploadImageBase64(image);
+
+    const aiAnalysis =
+      await this.floodAreaAiAnalysisRepository.analyzeFloodAreaImage(
+        imageFloodArea
+      );
+
+    const floodArea = await this.floodAreaRepository.createFloodArea(
+      new FloodAreaEntity({ ...body, userId })
+    );
 
     await this.imageFloodAreaRepository.createImageFloodArea(
       floodArea.id,
@@ -87,7 +91,7 @@ export class CreateFloodAreaUseCase {
 
     return {
       ...floodArea,
-      // image: imageEntity,
+      aiAnalysis,
     };
   }
 }

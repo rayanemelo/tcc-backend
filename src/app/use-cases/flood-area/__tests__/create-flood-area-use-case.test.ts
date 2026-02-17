@@ -9,6 +9,8 @@ import { ImageStorageRepositoryMock } from '../../../../test/repositories/images
 import { ImagesFloodAreaRepositoryMock } from '../../../../test/repositories/images-flood-area/images-flood-area-repository-mock';
 import { CreateFloodAreaUseCase } from '../create-flood-area-use-case';
 import { Exception } from '../../../../infra/exception/exception';
+import { FloodAreaAiAnalysisRepositoryMock } from '../../../../test/repositories/flood-area-ai-analysis/flood-area-ai-analysis-repository-mock';
+import { FloodAreaAiAnalysisFactoryMock } from '../../../../test/factories/flood-area-ai-analysis/flood-area-ai-analysis-factory-mock';
 
 jest.mock('../../../../infra/utils/is-within-radius', () => ({
   isWithinRadius: jest.fn(),
@@ -27,7 +29,8 @@ describe('Create Flood Area Use Case', () => {
     useCase = new CreateFloodAreaUseCase(
       FloodAreaRepositoryMock,
       ImagesFloodAreaRepositoryMock,
-      ImageStorageRepositoryMock
+      ImageStorageRepositoryMock,
+      FloodAreaAiAnalysisRepositoryMock
     );
     jest.clearAllMocks();
   });
@@ -39,6 +42,7 @@ describe('Create Flood Area Use Case', () => {
   const mockImageBase64 = ImageStorageMockFactory.createEntity();
   const mockFloodArea = FloodAreaMockFactory.createEntity();
   const mockImages = ImagesFloodAreaMockFactory.createEntity();
+  const mockAiAnalysis = FloodAreaAiAnalysisFactoryMock.createEntity();
 
   it('should create a new flood area successfully', async () => {
     // Arrange
@@ -48,8 +52,11 @@ describe('Create Flood Area Use Case', () => {
       mockFloodArea
     );
 
-    ImageStorageRepositoryMock.uploadImageBase64.mockResolvedValueOnce(
-      mockImageBase64
+    FloodAreaAiAnalysisRepositoryMock.analyzeFloodAreaImage.mockResolvedValueOnce(
+      mockAiAnalysis
+    );
+    FloodAreaRepositoryMock.createFloodArea.mockResolvedValueOnce(
+      mockFloodArea
     );
     ImagesFloodAreaRepositoryMock.createImageFloodArea.mockResolvedValueOnce(
       mockImages
@@ -74,14 +81,19 @@ describe('Create Flood Area Use Case', () => {
     expect(FloodAreaRepositoryMock.createFloodArea).toHaveBeenCalledWith(
       mockFloodArea
     );
-    expect(ImageStorageRepositoryMock.uploadImageBase64).toHaveBeenCalledWith(
-      mockImageBase64
-    );
+    expect(ImageStorageRepositoryMock.uploadImageBase64).not.toHaveBeenCalled();
+    expect(
+      FloodAreaAiAnalysisRepositoryMock.analyzeFloodAreaImage
+    ).toHaveBeenCalledWith(expect.any(String));
+
+    const imageUrlSentToAi =
+      FloodAreaAiAnalysisRepositoryMock.analyzeFloodAreaImage.mock.calls[0][0];
     expect(
       ImagesFloodAreaRepositoryMock.createImageFloodArea
-    ).toHaveBeenCalledWith(mockFloodArea.id, mockImageBase64);
+    ).toHaveBeenCalledWith(mockFloodArea.id, imageUrlSentToAi);
     expect(result).toEqual({
       ...mockFloodArea,
+      aiAnalysis: mockAiAnalysis,
     });
   });
 

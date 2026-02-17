@@ -8,6 +8,7 @@ import { GlobalExceptionHandler } from '../../exception/global-exception-handler
 import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-area-repository-prisma';
 import { ImageStorageCloudinary } from '../../storages/image-storage-cloudinary';
 import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
+import { FloodAreaAiAnalysisHttpRepository } from '../../repositories/flood-area-ai-analysis/flood-area-ai-analysis-http-repository';
 
 const bodySchema = z.object({
   address: z.string(),
@@ -29,10 +30,13 @@ class CreateFloodAreaController {
     const floodAreaRepository = new FloodAreaRepositoryPrisma();
     const imageFloodAreaRepository = new ImageFloodAreaRepositoryPrisma();
     const imageStorageRepository = new ImageStorageCloudinary();
+    const floodAreaAiAnalysisRepository =
+      new FloodAreaAiAnalysisHttpRepository();
     this.createFloodAreaUseCase = new CreateFloodAreaUseCase(
       floodAreaRepository,
       imageFloodAreaRepository,
-      imageStorageRepository
+      imageStorageRepository,
+      floodAreaAiAnalysisRepository
     );
   }
 
