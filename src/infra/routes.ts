@@ -55,7 +55,7 @@ export class Routes {
     );
     this.router.post(
       '/flood-area',
-      // authorize,
+      authorize,
       createFloodAreaController.handle
     );
     this.router.post(

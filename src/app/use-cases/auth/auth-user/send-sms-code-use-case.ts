@@ -54,6 +54,6 @@ export class SendSmsCodeUseCase {
 
     const message = messages.sms.codeMessage(newCode);
     console.log('message: ', message);
-    await this.smsService.send(phone, message);
+    // await this.smsService.send(phone, message);
   }
 }

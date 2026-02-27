@@ -44,7 +44,7 @@ export class CreateFloodAreaUseCase {
     private imageFloodAreaRepository: IImageFloodAreaRepository,
     private imageStorageRepository: IImageStorageRepository,
     private floodAreaAiAnalysisRepository: IFloodAreaAiAnalysisRepository
-  ) { }
+  ) {}
 
   async execute(
     userId: number,
@@ -71,7 +71,8 @@ export class CreateFloodAreaUseCase {
 
     if (!isBase64Image) throw new Exception(400, 'Image is not a valid base64');
 
-    const imageFloodArea = 'https://res.cloudinary.com/dvtdzsvtl/image/upload/v1746237999/irxsy2jiejjaekmqr0je.jpg'
+    const imageFloodArea =
+      'https://res.cloudinary.com/dvtdzsvtl/image/upload/v1746237999/irxsy2jiejjaekmqr0je.jpg';
     // const imageFloodArea =
     //   await this.imageStorageRepository.uploadImageBase64(image);
 
@@ -79,6 +80,7 @@ export class CreateFloodAreaUseCase {
       await this.floodAreaAiAnalysisRepository.analyzeFloodAreaImage(
         imageFloodArea
       );
+    console.log('aiAnalysis: ', aiAnalysis);
 
     const floodArea = await this.floodAreaRepository.createFloodArea(
       new FloodAreaEntity({ ...body, userId })

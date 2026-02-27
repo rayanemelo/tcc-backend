@@ -46,8 +46,8 @@ class CreateFloodAreaController {
   ) => {
     try {
       const body = bodySchema.parse(req.body);
-
       const userId = req.userId;
+      console.log('userId: ', userId);
 
       const floodArea = await this.createFloodAreaUseCase.execute(userId, body);
 

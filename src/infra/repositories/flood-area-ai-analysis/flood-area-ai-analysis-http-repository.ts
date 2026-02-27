@@ -5,13 +5,13 @@ import { Exception } from '../../exception/exception';
 import { handleRequestError } from '../../exception/handleRequestError';
 
 export class FloodAreaAiAnalysisHttpRepository
-  implements IFloodAreaAiAnalysisRepository {
+  implements IFloodAreaAiAnalysisRepository
+{
   async analyzeFloodAreaImage(
     imageUrl: string
   ): Promise<FloodAreaAiAnalysisEntity> {
     const iaServiceUrl = process.env.IA_SERVICE_URL;
-    const analyzePath =
-      process.env.IA_SERVICE_ANALYZE_IMAGE_PATH || '/analyze';
+    const analyzePath = process.env.IA_SERVICE_ANALYZE_IMAGE_PATH || '/analyze';
 
     if (!iaServiceUrl) {
       throw new Exception(500, 'IA service URL is not configured');
@@ -19,12 +19,12 @@ export class FloodAreaAiAnalysisHttpRepository
 
     try {
       const endpoint = new URL(analyzePath, iaServiceUrl).toString();
-      console.log("imageUrl: ", imageUrl);
+      // console.log("imageUrl: ", imageUrl);
 
       const response = await axios.post(endpoint, {
         imageUrl,
       });
-      console.log("response: ", response);
+      // console.log("response: ", response);
 
       const data = (response.data || {}) as Record<string, unknown>;
 

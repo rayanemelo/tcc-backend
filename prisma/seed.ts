@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const MOCK_FLOOD_AREAS = [
   {
@@ -33,10 +33,10 @@ const MOCK_FLOOD_AREAS = [
     lng: -50.7921,
     imageUrl: 'https://picsum.photos/id/1036/800/600',
   },
-]
+];
 
 async function main() {
-  console.log('🌱 Iniciando seed...')
+  console.log('🌱 Iniciando seed...');
 
   /* =========================
      FAQ
@@ -59,7 +59,8 @@ async function main() {
           'O aplicativo exibe todos os pontos de alagamento registrados em tempo real no mapa interativo.',
       },
       {
-        question: 'O que acontece quando recebo um alerta sobre um ponto de alagamento?',
+        question:
+          'O que acontece quando recebo um alerta sobre um ponto de alagamento?',
         answer:
           "Quando você estiver próximo a um ponto de alagamento, receberá um alerta perguntando se o local ainda está alagado. Você pode responder 'Sim' ou 'Não'.",
       },
@@ -74,23 +75,24 @@ async function main() {
           'As notificações são mensagens enviadas pelo administrador do sistema sobre condições climáticas adversas.',
       },
       {
-        question: 'Como posso relatar um problema técnico ou fornecer feedback?',
+        question:
+          'Como posso relatar um problema técnico ou fornecer feedback?',
         answer:
           'Caso encontre problemas técnicos ou tenha sugestões, utilize o formulário de feedback disponível no aplicativo.',
       },
       {
-        question: 'O que devo fazer se não receber o código de verificação por SMS?',
+        question:
+          'O que devo fazer se não receber o código de verificação por SMS?',
         answer:
           'Verifique o número informado, o sinal do celular e tente solicitar o código novamente.',
       },
       {
         question: 'O aplicativo é gratuito?',
-        answer:
-          'Sim, o aplicativo é gratuito para download e uso.',
+        answer: 'Sim, o aplicativo é gratuito para download e uso.',
       },
     ],
     skipDuplicates: true,
-  })
+  });
 
   /* =========================
      USER ADMIN
@@ -103,11 +105,10 @@ async function main() {
     create: {
       name: 'Rayane Melo',
       email: 'ray@gmail.com',
-      password:
-        '$2b$10$IGR0JVrsi/hIK44YVqcZhOruXgxtsAlcfea196pelsDkZv0uJzCp6',
+      password: '$2b$10$IGR0JVrsi/hIK44YVqcZhOruXgxtsAlcfea196pelsDkZv0uJzCp6',
       active: true,
     },
-  })
+  });
 
   /* =========================
      FLOOD LEVELS
@@ -116,19 +117,19 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: { id: 1, level: 'leve' },
-  })
+  });
 
   await prisma.floodLevel.upsert({
     where: { id: 2 },
     update: {},
     create: { id: 2, level: 'moderado' },
-  })
+  });
 
   await prisma.floodLevel.upsert({
     where: { id: 3 },
     update: {},
     create: { id: 3, level: 'interditado' },
-  })
+  });
 
   /* =========================
      USER + FLOOD AREAS
@@ -142,27 +143,27 @@ async function main() {
       phone: '51990000001',
       active: true,
     },
-  })
+  });
 
   const floodLevelByName = await prisma.floodLevel.findMany({
     where: {
       level: { in: ['leve', 'moderado', 'interditado'] },
     },
-  })
+  });
 
   const floodLevelIdMap = floodLevelByName.reduce<Record<string, number>>(
     (acc, item) => {
-      acc[item.level] = item.id
-      return acc
+      acc[item.level] = item.id;
+      return acc;
     },
-    {},
-  )
+    {}
+  );
 
   for (const area of MOCK_FLOOD_AREAS) {
-    const floodLevelId = floodLevelIdMap[area.nivel]
+    const floodLevelId = floodLevelIdMap[area.nivel];
 
     if (!floodLevelId) {
-      throw new Error(`Nível de alagamento inválido no seed: ${area.nivel}`)
+      throw new Error(`Nível de alagamento inválido no seed: ${area.nivel}`);
     }
 
     await prisma.floodArea.upsert({
@@ -176,7 +177,9 @@ async function main() {
         userId: defaultUser.id,
         floodLevelId,
         commentsAdmin:
-          area.status === 'rejected' ? 'Relato rejeitado pela moderação.' : null,
+          area.status === 'rejected'
+            ? 'Relato rejeitado pela moderação.'
+            : null,
       },
       create: {
         id: area.id,
@@ -188,10 +191,12 @@ async function main() {
         userId: defaultUser.id,
         floodLevelId,
         commentsAdmin:
-          area.status === 'rejected' ? 'Relato rejeitado pela moderação.' : null,
+          area.status === 'rejected'
+            ? 'Relato rejeitado pela moderação.'
+            : null,
         createdAt: area.data,
       },
-    })
+    });
 
     await prisma.images.upsert({
       where: { id: area.id },
@@ -204,7 +209,7 @@ async function main() {
         url: area.imageUrl,
         floodAreaId: area.id,
       },
-    })
+    });
   }
 
   /* =========================
@@ -216,24 +221,38 @@ async function main() {
       { content: 'Nível do rio subiu 20cm nas últimas 12 horas.' },
       { content: 'Alerta de chuva forte para as próximas horas.' },
       { content: 'Equipe de monitoramento enviou novas imagens da região.' },
-      { content: 'Alerta de evacuação preventiva. Siga as instruções da Defesa Civil.' },
-      { content: 'Ruas alagadas nas proximidades. Evite transitar pela região.' },
-      { content: 'Atualização: situação está sob controle, mas continue acompanhando.' },
-      { content: 'Seu relato foi analisado por nossa equipe. Obrigado pela contribuição!' },
+      {
+        content:
+          'Alerta de evacuação preventiva. Siga as instruções da Defesa Civil.',
+      },
+      {
+        content: 'Ruas alagadas nas proximidades. Evite transitar pela região.',
+      },
+      {
+        content:
+          'Atualização: situação está sob controle, mas continue acompanhando.',
+      },
+      {
+        content:
+          'Seu relato foi analisado por nossa equipe. Obrigado pela contribuição!',
+      },
       { content: 'Previsão indica melhora no tempo nas próximas 24h.' },
-      { content: 'Monitoramento constante sendo realizado pela nossa equipe técnica.' },
+      {
+        content:
+          'Monitoramento constante sendo realizado pela nossa equipe técnica.',
+      },
     ],
     skipDuplicates: true,
-  })
+  });
 
-  console.log('✅ Seed finalizado com sucesso')
+  console.log('✅ Seed finalizado com sucesso');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Erro no seed:', e)
-    process.exit(1)
+    console.error('❌ Erro no seed:', e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });
