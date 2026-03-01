@@ -104,8 +104,26 @@ model FloodArea {
   user       User       @relation(fields: [userId], references: [id])
   floodLevel FloodLevel @relation(fields: [floodLevelId], references: [id])
   images     Images[]
+  aiAnalysis FloodAreaAiAnalysis?
 
   @@map("tb_flood_area")
+}
+
+model FloodAreaAiAnalysis {
+  id            Int       @id @default(autoincrement())
+  floodAreaId   Int       @unique @map("flood_area_id")
+  imageUrl      String    @map("image_url")
+  isFlood       Boolean?  @map("is_flood")
+  confidence    Float?
+  veracityScore Float?    @map("veracity_score")
+  analysis      String?
+  metadata      Json?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  floodArea FloodArea @relation(fields: [floodAreaId], references: [id])
+
+  @@map("tb_flood_area_ai_analysis")
 }
 
 model FloodLevel {
