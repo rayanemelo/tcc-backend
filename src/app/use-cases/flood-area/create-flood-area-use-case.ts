@@ -6,7 +6,6 @@ import { IFloodAreaAiAnalysisRepository } from '../../../domain/repositories/flo
 import { Exception } from '../../../infra/exception/exception';
 import { Base64 } from '../../../infra/utils/base-64';
 import { isWithinRadius } from '../../../infra/utils/is-within-radius';
-import { FloodAreaAiAnalysisEntity } from '../../../domain/entities/flood-area-ai-analysis/flood-area-ai-analysis-entity';
 
 export type FloodAreaDTO = {
   address: string;
@@ -35,7 +34,6 @@ export type FloodAreaResponseDTO = {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
-  aiAnalysis: FloodAreaAiAnalysisEntity;
 };
 
 export class CreateFloodAreaUseCase {
@@ -44,7 +42,7 @@ export class CreateFloodAreaUseCase {
     private imageFloodAreaRepository: IImageFloodAreaRepository,
     private imageStorageRepository: IImageStorageRepository,
     private floodAreaAiAnalysisRepository: IFloodAreaAiAnalysisRepository
-  ) {}
+  ) { }
 
   async execute(
     userId: number,
@@ -71,16 +69,9 @@ export class CreateFloodAreaUseCase {
 
     if (!isBase64Image) throw new Exception(400, 'Image is not a valid base64');
 
-    const imageFloodArea =
-      'https://res.cloudinary.com/dvtdzsvtl/image/upload/v1746237999/irxsy2jiejjaekmqr0je.jpg';
-    // const imageFloodArea =
-    //   await this.imageStorageRepository.uploadImageBase64(image);
 
-    const aiAnalysis =
-      await this.floodAreaAiAnalysisRepository.analyzeFloodAreaImage(
-        imageFloodArea
-      );
-    console.log('aiAnalysis: ', aiAnalysis);
+    const imageFloodArea =
+      await this.imageStorageRepository.uploadImageBase64(image);
 
     const floodArea = await this.floodAreaRepository.createFloodArea(
       new FloodAreaEntity({ ...body, userId })
@@ -91,9 +82,16 @@ export class CreateFloodAreaUseCase {
       imageFloodArea
     );
 
+    this.floodAreaAiAnalysisRepository
+      .analyzeFloodAreaImage(imageFloodArea)
+      .catch(() => {
+        console.error(
+          'Flood area AI analysis failed without impacting flood area creation',
+        );
+      });
+
     return {
       ...floodArea,
-      aiAnalysis,
     };
   }
 }
