@@ -3,6 +3,8 @@ import { IUserRepository } from '../../../domain/repositories/user/user-reposito
 
 export type UserDTO = {
   phone: string;
+  latitude: string;
+  longitude: string;
 };
 
 export class CreateUserUseCase {

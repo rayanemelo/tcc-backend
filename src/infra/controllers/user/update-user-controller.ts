@@ -7,7 +7,10 @@ import { z } from 'zod';
 
 const bodySchema = z.object({
   phone: z.string().nonempty(),
-});
+  latitude: z.string().nonempty().optional(),
+  longitude: z.string().nonempty().optional(),
+})
+
 
 class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
@@ -18,7 +21,7 @@ class UpdateUserController {
   }
 
   handle = async (
-    req: Request<{ id: number; phone: string }>,
+    req: Request<{ id: number; phone: string; latitude?: string; longitude?: string }>,
     res: Response
   ) => {
     try {

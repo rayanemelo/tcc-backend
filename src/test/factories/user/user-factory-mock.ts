@@ -6,6 +6,8 @@ export class UserMockFactory {
     return {
       id: faker.number.int(),
       phone: faker.phone.number().toString(),
+      latitude: faker.location.latitude().toString(),
+      longitude: faker.location.longitude().toString(),
       active: true,
       createdAt: new Date(),
       updatedAt: new Date(),

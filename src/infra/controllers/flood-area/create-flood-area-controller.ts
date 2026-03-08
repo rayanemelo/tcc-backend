@@ -9,6 +9,7 @@ import { FloodAreaRepositoryPrisma } from '../../repositories/flood-area/flood-a
 import { ImageStorageCloudinary } from '../../storages/image-storage-cloudinary';
 import { ImageFloodAreaRepositoryPrisma } from '../../repositories/images-flood-area/images-flood-area-prisma';
 import { FloodAreaAiAnalysisHttpRepository } from '../../repositories/flood-area-ai-analysis/flood-area-ai-analysis-http-repository';
+import { UserRepositoryPrisma } from '../../repositories/user/user-repository-prisma';
 
 const bodySchema = z.object({
   address: z.string(),
@@ -32,11 +33,13 @@ class CreateFloodAreaController {
     const imageStorageRepository = new ImageStorageCloudinary();
     const floodAreaAiAnalysisRepository =
       new FloodAreaAiAnalysisHttpRepository();
+    const userRepository = new UserRepositoryPrisma();
     this.createFloodAreaUseCase = new CreateFloodAreaUseCase(
       floodAreaRepository,
       imageFloodAreaRepository,
       imageStorageRepository,
-      floodAreaAiAnalysisRepository
+      floodAreaAiAnalysisRepository,
+      userRepository
     );
   }
 

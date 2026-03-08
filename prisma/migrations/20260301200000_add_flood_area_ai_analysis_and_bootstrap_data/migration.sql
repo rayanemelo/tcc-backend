@@ -26,6 +26,22 @@ REFERENCES "tb_flood_area"("id")
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
 
+-- Add mandatory geolocation storage for users
+ALTER TABLE "tb_user"
+ADD COLUMN IF NOT EXISTS "latitude" TEXT,
+ADD COLUMN IF NOT EXISTS "longitude" TEXT;
+
+UPDATE "tb_user"
+SET
+    "latitude" = COALESCE("latitude", '0'),
+    "longitude" = COALESCE("longitude", '0');
+
+ALTER TABLE "tb_user"
+ALTER COLUMN "latitude" DROP DEFAULT,
+ALTER COLUMN "longitude" DROP DEFAULT,
+ALTER COLUMN "latitude" SET NOT NULL,
+ALTER COLUMN "longitude" SET NOT NULL;
+
 -- FAQ bootstrap data
 INSERT INTO "tb_faq" ("question","answer","created_at","updated_at")
 SELECT
@@ -98,10 +114,13 @@ SELECT 'interditado',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 WHERE NOT EXISTS (SELECT 1 FROM "tb_flood_level" WHERE "level"='interditado');
 
 -- Default user
-INSERT INTO "tb_user" ("phone","active","created_at","updated_at")
-VALUES ('51990000001',true,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+INSERT INTO "tb_user" ("phone","latitude","longitude","active","created_at","updated_at")
+VALUES ('51990000001','-29.6509','-50.7814',true,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
 ON CONFLICT ("phone")
-DO UPDATE SET "active"=EXCLUDED."active";
+DO UPDATE SET
+"latitude"=EXCLUDED."latitude",
+"longitude"=EXCLUDED."longitude",
+"active"=EXCLUDED."active";
 
 -- Flood areas bootstrap
 INSERT INTO "tb_flood_area"

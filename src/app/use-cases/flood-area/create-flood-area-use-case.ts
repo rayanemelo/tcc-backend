@@ -3,6 +3,7 @@ import { IFloodAreaRepository } from '../../../domain/repositories/flood-area/fl
 import { IImageStorageRepository } from '../../../domain/repositories/images-flood-area-storage/image-storage-repository';
 import { IImageFloodAreaRepository } from '../../../domain/repositories/images-flood-area-storage/images-flood-area-repository';
 import { IFloodAreaAiAnalysisRepository } from '../../../domain/repositories/flood-area-ai-analysis/flood-area-ai-analysis-repository';
+import { IUserRepository } from '../../../domain/repositories/user/user-repository';
 import { Exception } from '../../../infra/exception/exception';
 import { Base64 } from '../../../infra/utils/base-64';
 import { isWithinRadius } from '../../../infra/utils/is-within-radius';
@@ -41,8 +42,9 @@ export class CreateFloodAreaUseCase {
     private floodAreaRepository: IFloodAreaRepository,
     private imageFloodAreaRepository: IImageFloodAreaRepository,
     private imageStorageRepository: IImageStorageRepository,
-    private floodAreaAiAnalysisRepository: IFloodAreaAiAnalysisRepository
-  ) { }
+    private floodAreaAiAnalysisRepository: IFloodAreaAiAnalysisRepository,
+    private userRepository: IUserRepository
+  ) {}
 
   async execute(
     userId: number,
@@ -69,6 +71,10 @@ export class CreateFloodAreaUseCase {
 
     if (!isBase64Image) throw new Exception(400, 'Image is not a valid base64');
 
+    await this.userRepository.updateUser(userId, {
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+    });
 
     const imageFloodArea =
       await this.imageStorageRepository.uploadImageBase64(image);

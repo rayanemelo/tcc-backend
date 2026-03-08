@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
-import { SendSmsCodeUseCase } from '../../../../app/use-cases/auth/auth-user/send-sms-code-use-case';
+import {
+  SendSmsCodeDTO,
+  SendSmsCodeUseCase,
+} from '../../../../app/use-cases/auth/auth-user/send-sms-code-use-case';
 import { GlobalExceptionHandler } from '../../../exception/global-exception-handler';
 import { CodeRepositoryPrisma } from '../../../repositories/code/code-repository-prisma';
 import { UserRepositoryPrisma } from '../../../repositories/user/user-repository-prisma';
@@ -15,6 +18,13 @@ const bodySchema = z.object({
     .regex(/^\d+$/, {
       message: messages.validations.phoneDigits,
     }),
+  userLocation: z
+    .object({
+      latitude: z.string(),
+      longitude: z.string(),
+    })
+    .nullable()
+    .optional(),
 });
 
 class SendSmsCodeController {
@@ -31,11 +41,11 @@ class SendSmsCodeController {
     );
   }
 
-  handle = async (req: Request<{ phone: string }>, res: Response) => {
+  handle = async (req: Request<unknown, unknown, SendSmsCodeDTO>, res: Response) => {
     try {
-      const { phone } = bodySchema.parse(req.body);
+      const body = bodySchema.parse(req.body);
 
-      await this.sendSmsCodeUseCase.execute(phone);
+      await this.sendSmsCodeUseCase.execute(body);
 
       return res.status(204).send();
     } catch (error) {

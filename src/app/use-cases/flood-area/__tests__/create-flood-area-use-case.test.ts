@@ -11,6 +11,8 @@ import { CreateFloodAreaUseCase } from '../create-flood-area-use-case';
 import { Exception } from '../../../../infra/exception/exception';
 import { FloodAreaAiAnalysisRepositoryMock } from '../../../../test/repositories/flood-area-ai-analysis/flood-area-ai-analysis-repository-mock';
 import { FloodAreaAiAnalysisFactoryMock } from '../../../../test/factories/flood-area-ai-analysis/flood-area-ai-analysis-factory-mock';
+import { UserRepositoryMock } from '../../../../test/repositories/user/user-repository-mock';
+import { UserMockFactory } from '../../../../test/factories/user/user-factory-mock';
 
 jest.mock('../../../../infra/utils/is-within-radius', () => ({
   isWithinRadius: jest.fn(),
@@ -30,7 +32,8 @@ describe('Create Flood Area Use Case', () => {
       FloodAreaRepositoryMock,
       ImagesFloodAreaRepositoryMock,
       ImageStorageRepositoryMock,
-      FloodAreaAiAnalysisRepositoryMock
+      FloodAreaAiAnalysisRepositoryMock,
+      UserRepositoryMock
     );
     jest.clearAllMocks();
   });
@@ -46,8 +49,17 @@ describe('Create Flood Area Use Case', () => {
 
   it('should create a new flood area successfully', async () => {
     // Arrange
+    const mockUser = UserMockFactory.createEntity({
+      id: mockFloodArea.userId,
+      latitude: mockUserLocation.latitude,
+      longitude: mockUserLocation.longitude,
+    });
     (isWithinRadius as jest.Mock).mockReturnValue(true);
     (Base64.isBase64Image as jest.Mock).mockReturnValue(true);
+    UserRepositoryMock.updateUser.mockResolvedValueOnce(mockUser);
+    ImageStorageRepositoryMock.uploadImageBase64.mockResolvedValueOnce(
+      mockImageBase64
+    );
     FloodAreaRepositoryMock.createFloodArea.mockResolvedValueOnce(
       mockFloodArea
     );
@@ -78,10 +90,19 @@ describe('Create Flood Area Use Case', () => {
       latUser: Number(mockUserLocation.latitude),
       lonUser: Number(mockUserLocation.longitude),
     });
+    expect(UserRepositoryMock.updateUser).toHaveBeenCalledWith(
+      mockFloodArea.userId,
+      {
+        latitude: mockUserLocation.latitude,
+        longitude: mockUserLocation.longitude,
+      }
+    );
     expect(FloodAreaRepositoryMock.createFloodArea).toHaveBeenCalledWith(
       mockFloodArea
     );
-    expect(ImageStorageRepositoryMock.uploadImageBase64).not.toHaveBeenCalled();
+    expect(ImageStorageRepositoryMock.uploadImageBase64).toHaveBeenCalledWith(
+      mockImageBase64
+    );
     expect(
       FloodAreaAiAnalysisRepositoryMock.analyzeFloodAreaImage
     ).toHaveBeenCalledWith(expect.any(String));
@@ -91,10 +112,7 @@ describe('Create Flood Area Use Case', () => {
     expect(
       ImagesFloodAreaRepositoryMock.createImageFloodArea
     ).toHaveBeenCalledWith(mockFloodArea.id, imageUrlSentToAi);
-    expect(result).toEqual({
-      ...mockFloodArea,
-      aiAnalysis: mockAiAnalysis,
-    });
+    expect(result).toEqual(mockFloodArea);
   });
 
   it('should throw an error if the user is outside the radius', async () => {
@@ -126,6 +144,7 @@ describe('Create Flood Area Use Case', () => {
       latUser: Number(mockUserLocation.latitude),
       lonUser: Number(mockUserLocation.longitude),
     });
+    expect(UserRepositoryMock.updateUser).not.toHaveBeenCalled();
     expect(FloodAreaRepositoryMock.createFloodArea).not.toHaveBeenCalled();
   });
 
@@ -143,5 +162,6 @@ describe('Create Flood Area Use Case', () => {
     await expect(useCase.execute(mockFloodArea.userId, body)).rejects.toThrow(
       Exception
     );
+    expect(UserRepositoryMock.updateUser).not.toHaveBeenCalled();
   });
 });

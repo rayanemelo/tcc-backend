@@ -6,6 +6,8 @@ import { z } from 'zod';
 
 const bodySchema = z.object({
   phone: z.string().nonempty(),
+  latitude: z.string().nonempty(),
+  longitude: z.string().nonempty(),
 });
 
 class CreateUserController {
@@ -16,7 +18,10 @@ class CreateUserController {
     this.createUserUseCase = new CreateUserUseCase(userRepository);
   }
 
-  handle = async (req: Request<{ phone: string }>, res: Response) => {
+  handle = async (
+    req: Request<{ phone: string; latitude: string; longitude: string }>,
+    res: Response
+  ) => {
     try {
       const body = bodySchema.parse(req.body);
 

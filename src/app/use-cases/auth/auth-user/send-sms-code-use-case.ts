@@ -7,6 +7,16 @@ import { messages } from '../../../../infra/config/messages';
 import { Exception } from '../../../../infra/exception/exception';
 import { GenerateCode } from '../../../../infra/utils/generate-code';
 
+export type UserLocationDTO = {
+  latitude: string;
+  longitude: string;
+};
+
+export type SendSmsCodeDTO = {
+  phone: string;
+  userLocation?: UserLocationDTO | null;
+};
+
 export class SendSmsCodeUseCase {
   constructor(
     private userRepository: IUserRepository,
@@ -14,13 +24,21 @@ export class SendSmsCodeUseCase {
     private smsService: ISmsService
   ) {}
 
-  async execute(phone: string): Promise<void> {
+  async execute({ phone, userLocation }: SendSmsCodeDTO): Promise<void> {
     let user = await this.userRepository.getUserByPhone(phone);
 
     if (!user) {
+      const latitude = userLocation?.latitude ?? '0';
+      const longitude = userLocation?.longitude ?? '0';
+
       user = await this.userRepository.createUser(
-        new UserEntity({ phone: phone })
+        new UserEntity({ phone: phone, latitude, longitude })
       );
+    } else if (userLocation) {
+      user = await this.userRepository.updateUser(user.id, {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+      });
     }
 
     const newCode = GenerateCode.generateCode();

@@ -29,7 +29,7 @@ describe('Send Sms Code Use Case', () => {
     CodeRepositoryMock.getCodeByUserId.mockResolvedValue(null);
     CodeRepositoryMock.createCode.mockResolvedValue(code);
 
-    await useCase.execute(phone);
+    await useCase.execute({ phone });
 
     expect(UserRepositoryMock.createUser).toHaveBeenCalled();
     expect(CodeRepositoryMock.createCode).toHaveBeenCalled();
@@ -50,10 +50,61 @@ describe('Send Sms Code Use Case', () => {
       attemptsCount: 5,
     });
 
-    await useCase.execute(phone);
+    await useCase.execute({ phone });
 
     expect(CodeRepositoryMock.updateCode).toHaveBeenCalled();
     expect(SmsServiceMock.send).toHaveBeenCalled();
+  });
+
+  it('should use user location when creating user', async () => {
+    const phone = faker.phone.number();
+    const code = CodeMockFactory.createEntity();
+    const user = UserMockFactory.createEntity();
+    const userLocation = {
+      latitude: faker.location.latitude().toString(),
+      longitude: faker.location.longitude().toString(),
+    };
+
+    UserRepositoryMock.getUserByPhone.mockResolvedValue(null);
+    UserRepositoryMock.createUser.mockResolvedValue(user);
+    CodeRepositoryMock.getCodeByUserId.mockResolvedValue(null);
+    CodeRepositoryMock.createCode.mockResolvedValue(code);
+
+    await useCase.execute({ phone, userLocation });
+
+    expect(UserRepositoryMock.createUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        phone,
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+      })
+    );
+  });
+
+  it('should update user location when user exists and location is provided', async () => {
+    const phone = faker.phone.number();
+    const user = UserMockFactory.createEntity();
+    const code = CodeMockFactory.createEntity();
+    const userLocation = {
+      latitude: faker.location.latitude().toString(),
+      longitude: faker.location.longitude().toString(),
+    };
+
+    UserRepositoryMock.getUserByPhone.mockResolvedValue(user);
+    UserRepositoryMock.updateUser.mockResolvedValue({
+      ...user,
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+    });
+    CodeRepositoryMock.getCodeByUserId.mockResolvedValue(null);
+    CodeRepositoryMock.createCode.mockResolvedValue(code);
+
+    await useCase.execute({ phone, userLocation });
+
+    expect(UserRepositoryMock.updateUser).toHaveBeenCalledWith(user.id, {
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+    });
   });
 
   it('should throw error if attempts exceed limit and under 10 minutes', async () => {
@@ -70,7 +121,7 @@ describe('Send Sms Code Use Case', () => {
     UserRepositoryMock.getUserByPhone.mockResolvedValue(user);
     CodeRepositoryMock.getCodeByUserId.mockResolvedValue(code);
 
-    await expect(useCase.execute(phone)).rejects.toThrow(
+    await expect(useCase.execute({ phone })).rejects.toThrow(
       messages.response.limitExceeded
     );
 
