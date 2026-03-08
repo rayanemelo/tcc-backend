@@ -5,7 +5,7 @@ import { Exception } from '../../../infra/exception/exception';
 export type UpdateFloodAreaByAdminDTO = {
   active: boolean;
   status: string;
-  commentsAdmin?: string;
+  commentsAdmin?: string | null;
 };
 
 export class UpdateFloodAreaByAdminUseCase {

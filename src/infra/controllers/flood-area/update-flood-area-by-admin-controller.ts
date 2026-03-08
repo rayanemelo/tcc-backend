@@ -11,7 +11,7 @@ import {
 const bodySchema = z.object({
   active: z.boolean(),
   status: z.string(),
-  commentsAdmin: z.string().optional(),
+  commentsAdmin: z.string().nullish(),
 });
 
 class UpdateFloodAreaByAdminController {

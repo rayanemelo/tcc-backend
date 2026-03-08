@@ -64,4 +64,34 @@ describe('Update Flood Area By Admin Use Case', () => {
     );
     expect(FloodAreaRepositoryMock.updateFloodArea).not.toHaveBeenCalled();
   });
+
+  it('should update flood area by admin with null comments', async () => {
+    const mockFloodArea = FloodAreaMockFactory.createEntity();
+    const userId = faker.number.int();
+
+    const updateData = {
+      active: true,
+      status: 'completed',
+      commentsAdmin: null,
+    };
+
+    FloodAreaRepositoryMock.getFloodAreaById = jest
+      .fn()
+      .mockResolvedValue(mockFloodArea);
+
+    FloodAreaRepositoryMock.updateFloodArea = jest
+      .fn()
+      .mockResolvedValue({ ...mockFloodArea, ...updateData });
+
+    const result = await useCase.execute(userId, updateData);
+
+    expect(FloodAreaRepositoryMock.getFloodAreaById).toHaveBeenCalledWith(
+      userId
+    );
+    expect(FloodAreaRepositoryMock.updateFloodArea).toHaveBeenCalledWith(
+      userId,
+      updateData
+    );
+    expect(result).toEqual({ ...mockFloodArea, ...updateData });
+  });
 });
